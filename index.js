@@ -28,6 +28,10 @@ app.post(API_BASE_URI+'adduser', (req, res) => {
     userController.addUser(req, res);
 })
 
+app.post(API_BASE_URI+"authenticate", (req, res) => {
+    userController.authenticate(req, res);
+})
+
 app.listen(PORT, () => {
     console.log("Listen to localhost:"+PORT);
 })

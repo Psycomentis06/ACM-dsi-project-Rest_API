@@ -1,5 +1,6 @@
 var User = require('../models/user');
 var passwordHash = require('password-hash');
+const { response } = require('express');
 
 function addUser(req, res) {
     // add user to database
@@ -23,32 +24,68 @@ function addUser(req, res) {
         })
         return
     }
-    
+
     User.create({
         firstName: firstName,
         lastName: lastName,
         email: email,
-        password: passwordHash.generate('test'+password)
+        password: passwordHash.generate('test' + password)
     })
-    .then(response => {
-        res.json({
-            data: response,
-            valid: true,
-            message: "User added successfuly"
+        .then(response => {
+            res.json({
+                data: response,
+                valid: true,
+                message: "User added successfuly"
+            })
         })
-    })
-    .catch(err=> {
-        let errMsg = [];
-        err.errors.map(element => {
-            errMsg.push(element.message);
+        .catch(err => {
+            let errMsg = [];
+            err.errors.map(element => {
+                errMsg.push(element.message);
+            })
+            res.json({
+                valid: false,
+                error: errMsg
+            })
         })
-        res.json({
-            valid: false,
-            error: errMsg
+}
+
+function authenticate(req, res) {
+    // authenticate user
+    var email = req.body.email;
+    var password = req.body.password;
+
+    User.findOne({where: {email: email}})
+        .then(response => {
+            if (response !== null) {
+                // user found
+                if (passwordHash.verify('test' + password, response.password)) {
+                    res.json({
+                        valid: true,
+                        message: "Logged in"
+                    })
+                } else {
+                    res.json({
+                        valid: false,
+                        message: "Wrong password"
+                    })
+                }
+            } else {
+                res.json({
+                    valid: false,
+                    message: "Email dose not exist"
+                })
+            }
         })
-    })
+        .catch(err => {
+            res.json({
+                err: err.message,
+                valid: false
+            })
+        })
 }
 
 module.exports = {
-    addUser
+    addUser,
+    authenticate
 }
