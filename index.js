@@ -1,10 +1,15 @@
+// imports
 var express = require('express');
 var app = express();
 var admin = require('firebase-admin');
+var cors = require('cors');
+var whitelist = require('./libs/cors.origin');
+// Port
 var PORT = process.env.PORT || 3000;
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
+app.use(cors());
 // Firebase init
 var serviceAccount = require('./dsi3-project-firebase-adminsdk-rl8cr-9e76e0fea6.json');
 admin.initializeApp({
