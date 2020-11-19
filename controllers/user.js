@@ -1,6 +1,6 @@
-var User = require('../models/user');
-var passwordHash = require('password-hash');
-const { response } = require('express');
+const User = require('../models/user');
+const passwordHash = require('password-hash');
+const jwt = require('jsonwebtoken');
 
 function addUser(req, res) {
     // add user to database
@@ -8,14 +8,6 @@ function addUser(req, res) {
     var lastName = req.body.last_name;
     var email = req.body.email;
     var password = req.body.password;
-
-    /*if (firstName === undefined || lastName === undefined || email === undefined || password === undefined) {
-        res.json({
-            valid: false,
-            error: "Required data missing"
-        })
-        return
-    }*/
 
     if (password.length > 16 || password.length < 8) {
         res.json({
@@ -55,14 +47,22 @@ function authenticate(req, res) {
     var email = req.body.email;
     var password = req.body.password;
 
-    User.findOne({where: {email: email}})
+    var user = User.findOne({where: {email: email}})
         .then(response => {
             if (response !== null) {
                 // user found
                 if (passwordHash.verify('test' + password, response.password)) {
+                    const token = jwt.sign({
+                        id: user.id,
+                        email: user.email,
+                        role: user.roles
+                    }, process.env.JWT_KEY, {
+                        expiresIn: '1h'
+                    })
                     res.json({
                         valid: true,
-                        message: "Logged in"
+                        message: "Logged in",
+                        token: token
                     })
                 } else {
                     res.json({
@@ -85,7 +85,40 @@ function authenticate(req, res) {
         })
 }
 
+function getUser(req, res) {
+    const userId = req.params.id;
+
+    User.findByPk(userId)
+    .then(response => {
+        if (response) {
+            // user found
+            delete response.dataValues.password; // remove password from object
+            delete response.dataValues.vkey; // remove vkey from object
+            res.status(200).json({
+                valid: true,
+                data: response.dataValues
+            });
+        }else {
+            res.status(404).json({
+                valid: false,
+                error: 'User not found'
+            })
+        }
+    })
+    .catch(err => {
+        res.status(404).json({
+            valid: false,
+            error: 'User error'
+        })
+    })
+}
+
+function editUser(req, res) {
+
+}
+
 module.exports = {
     addUser,
-    authenticate
+    authenticate,
+    getUser
 }

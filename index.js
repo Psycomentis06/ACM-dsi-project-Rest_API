@@ -16,21 +16,9 @@ admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
     databaseURL: "https://dsi3-project.firebaseio.com/"
 })
-// Controllers
-var userController = require('./controllers/user.controller');
-var adminController = require('./controllers/admin.controller');
 // Routes
-app.get('/', (req, res) =>{
-    res.send('Home');
-})
-
-app.post(API_BASE_URI+'adduser', (req, res) => {
-    userController.addUser(req, res);
-})
-
-app.post(API_BASE_URI+"authenticate", (req, res) => {
-    userController.authenticate(req, res);
-})
+const userRoutes = require('./routes/user');
+app.use(API_BASE_URI+"user", userRoutes);
 
 app.listen(PORT, () => {
     console.log("Listen to localhost:"+PORT);
