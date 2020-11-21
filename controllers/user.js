@@ -284,11 +284,79 @@ function deleteUser(req, res) {
         });
 }
 
+/**
+ * Activate account
+ */
+
+function activateUser(req, res) {
+    // user account verified <=> no vkey in db
+    const vkey = req.body.vkey;
+    if (!vkey) {
+        res.status(406).json({
+            valid: false,
+            message: "Verification key is missing"
+        })
+    } else {
+        // vkey sent in body
+        const userId = req.params.id;
+        User.findByPk(userId)
+            .then(response => {
+                if (response === null) {
+                    // not found
+                    res.status(404).json({
+                        valid: false,
+                        message: "User not found"
+                    })
+                } else {
+                    // user found
+                    // check vkey saved == vkey sent or not
+                    if (response.vkey === Number(vkey)) {
+                        // validate account by deleting the vkey from db
+                        response.vkey = null
+                        response.save()
+                            .then(response => {
+                                res.status(200).json({
+                                    valid: true,
+                                    message: "User account activated"
+                                })
+                            })
+                            .catch(err => {
+                                res.status(500).json({
+                                    valid: false,
+                                    message: "Set Key error",
+                                    err: err
+                                })
+                            });
+                    } else if (response.vkey === null) {
+                        // already verified
+                        res.status(403).json({
+                            valid: false,
+                            message: "User account already verified"
+                        })
+                    } else {
+                        // invalid vkey sent
+                        res.status(406).json({
+                            valid: false,
+                            message: "Invalid verification key"
+                        })
+                    }
+                }
+            })
+            .catch(err => {
+                res.status(500).json({
+                    valid: false,
+                    message: "User activate account error"
+                })
+            })
+    }
+}
+
 module.exports = {
     addUser,
     authenticate,
     getUser,
     setUser,
     setPassword,
-    deleteUser
+    deleteUser,
+    activateUser
 }
