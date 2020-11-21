@@ -222,7 +222,7 @@ function setPassword(req, res) {
                         // validate if old pass matches saved pass
                         if (passwordHash.verify(curentPassword, response.password)) {
                             // send and saved pass matches
-                            response.password = newPassword;
+                            response.password = passwordHash.generate(newPassword);
                             response.save()
                                 .then(response => {
                                     res.status(200).json({
