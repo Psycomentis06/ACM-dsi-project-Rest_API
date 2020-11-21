@@ -11,39 +11,39 @@ const User = require('../models/user');
  */
 
 router.post('/add', (req, res) => {
-    userController.addUser(req, res);
+  userController.addUser(req, res);
 });
 
 /**
  * Authenticate user
  */
 
- router.post('/authenticate', (req, res) => {
-    userController.authenticate(req, res);
- });
+router.post('/authenticate', (req, res) => {
+  userController.authenticate(req, res);
+});
 
- /**
-  * Get user by id
-  */
+/**
+ * Get user by id
+ */
 
-  router.get('/:id', adminAuth, (req, res) => {
-    userController.getUser(req, res);
-  })
+router.get('/:id', adminAuth, (req, res) => {
+  userController.getUser(req, res);
+})
 
 /**
  * Edit user
  */
 
-router.post('/edit/:id', superAdminAuth, (req, res) => {
-    res.send('found');
+router.put('/:id'/*, superAdminAuth*/, (req, res) => {
+  userController.editUser(req, res);
 });
 
 /**
  * Delete user
  */
 
- router.post('/delete/:id', superAdminAuth, (req, res) => {
-     res.send('deleted');
- })
+router.delete('/:id', superAdminAuth, (req, res) => {
+  res.send('deleted');
+})
 
 module.exports = router;
