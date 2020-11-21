@@ -42,8 +42,8 @@ router.put('/:id'/*, superAdminAuth*/, (req, res) => {
  * Delete user
  */
 
-router.delete('/:id', superAdminAuth, (req, res) => {
-  res.send('deleted');
+router.delete('/:id'/*, superAdminAuth*/, (req, res) => {
+  userController.deleteUser(req, res);
 })
 
 module.exports = router;
