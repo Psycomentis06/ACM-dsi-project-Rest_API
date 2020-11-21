@@ -43,8 +43,16 @@ router.put('/:id'/*, superAdminAuth*/, (req, res) => {
  */
 
 router.put('/:id/password', /* userAuth ,*/(req, res) => {
-  userController.setPassword(req , res);
+  userController.setPassword(req, res);
 });
+
+/**
+ * Validate user account
+ */
+
+router.put('/:id/verify', (req, res) => {
+ userController.activateUser(req, res);
+})
 
 /**
  * Delete user
