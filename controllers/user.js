@@ -21,7 +21,7 @@ function addUser(req, res) {
         firstName: firstName,
         lastName: lastName,
         email: email,
-        password: passwordHash.generate('test' + password)
+        password: passwordHash.generate(password)
     })
         .then(response => {
             res.json({
@@ -51,7 +51,7 @@ function authenticate(req, res) {
         .then(response => {
             if (response !== null) {
                 // user found
-                if (passwordHash.verify('test' + password, response.password)) {
+                if (passwordHash.verify(password, response.password)) {
                     const token = jwt.sign({
                         id: user.id,
                         email: user.email,
