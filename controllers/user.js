@@ -47,7 +47,7 @@ function authenticate(req, res) {
     var email = req.body.email;
     var password = req.body.password;
 
-    var user = User.findOne({where: {email: email}})
+    var user = User.findOne({ where: { email: email } })
         .then(response => {
             if (response !== null) {
                 // user found
@@ -89,36 +89,88 @@ function getUser(req, res) {
     const userId = req.params.id;
 
     User.findByPk(userId)
-    .then(response => {
-        if (response) {
-            // user found
-            delete response.dataValues.password; // remove password from object
-            delete response.dataValues.vkey; // remove vkey from object
-            res.status(200).json({
-                valid: true,
-                data: response.dataValues
-            });
-        }else {
+        .then(response => {
+            if (response) {
+                // user found
+                delete response.dataValues.password; // remove password from object
+                delete response.dataValues.vkey; // remove vkey from object
+                res.status(200).json({
+                    valid: true,
+                    data: response.dataValues
+                });
+            } else {
+                res.status(404).json({
+                    valid: false,
+                    error: 'User not found'
+                })
+            }
+        })
+        .catch(err => {
             res.status(404).json({
                 valid: false,
-                error: 'User not found'
+                error: 'User error'
             })
-        }
-    })
-    .catch(err => {
-        res.status(404).json({
-            valid: false,
-            error: 'User error'
         })
-    })
 }
 
 function editUser(req, res) {
-
+    const userId = req.params.id;
+    // Find user before update
+    User.findByPk(userId)
+        .then(response => {
+            if (response === null) {
+                // user not in database
+                res.status(404).json({
+                    valid: false,
+                    message: "User not found"
+                });
+            } else {
+                // user in database
+                const firstName = req.body.first_name;
+                const lastName = req.body.last_name;
+                const email = req.body.email;
+                if (firstName === undefined || lastName === undefined || email === undefined) {
+                    res.status(401).json({
+                        valid: false,
+                        message: "Attributes missing"
+                    });
+                } else {
+                    // update user
+                    response.firstName = firstName;
+                    response.lastName = lastName;
+                    response.email = email;
+                    response.save()
+                        .then(response => {
+                            // update success
+                            res.status(200).json({
+                                valid: true,
+                                message: 'User updated'
+                            })
+                        })
+                        .catch(err => {
+                            var errArray = [];
+                            err.errors.map(element => {
+                                errArray.push(element.message)
+                            });
+                            res.status(403).json({
+                                valid: false,
+                                error: errArray
+                            })
+                        })
+                }
+            }
+        })
+        .catch(err => {
+            res.status(401).json({
+                valid: false,
+                message: "User error"
+            })
+        });
 }
 
 module.exports = {
     addUser,
     authenticate,
-    getUser
+    getUser,
+    editUser
 }
