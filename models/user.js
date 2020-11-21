@@ -81,6 +81,26 @@ User.init({
                 msg: 'Phone number should be numeric'
             }
         }
+    },
+    address: {
+        type: DataTypes.STRING(50),
+        allowNull: true
+    },
+    country: {
+        type: DataTypes.STRING(30),
+        allowNull: true
+    },
+    bio: {
+        type: DataTypes.TEXT,
+        allowNull: true
+    },
+    vkey: {
+        type: DataTypes.INTEGER,
+        defaultValue: Math.floor(100000 + Math.random() * 900000) // 6 digits
+    },
+    chatRoom: {
+        type: DataTypes.STRING(30),
+        defaultValue: Math.floor(1000000000 + Math.random() * 9000000000) // 9 digits
     }
 }, {
     sequelize,
