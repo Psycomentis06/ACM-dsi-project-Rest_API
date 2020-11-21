@@ -10,6 +10,15 @@ var API_BASE_URI = "/api/v1/";
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(cors());
+app.use(function(err, req, res, next) {
+
+  // error 
+  res.status(500).json({
+      valid: false,
+      message: "Error in body parsing or maybe another problem. please check your body request JSON format or contact us for this bug"
+  });
+
+});
 // Firebase init
 var serviceAccount = require('./dsi3-project-firebase-adminsdk-rl8cr-9e76e0fea6.json');
 admin.initializeApp({
