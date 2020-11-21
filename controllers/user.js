@@ -2,6 +2,11 @@ const User = require('../models/user');
 const passwordHash = require('password-hash');
 const jwt = require('jsonwebtoken');
 
+
+/** 
+ * Create user
+ */
+
 function addUser(req, res) {
     // add user to database
     var firstName = req.body.first_name;
@@ -41,6 +46,10 @@ function addUser(req, res) {
             })
         })
 }
+
+/** 
+ * User login
+ */
 
 function authenticate(req, res) {
     // authenticate user
@@ -85,6 +94,10 @@ function authenticate(req, res) {
         })
 }
 
+/**
+ * Get user data
+ */
+
 function getUser(req, res) {
     const userId = req.params.id;
 
@@ -113,7 +126,11 @@ function getUser(req, res) {
         })
 }
 
-function editUser(req, res) {
+/**
+ * Edit user is Email first name and last name
+ */
+
+function setUser(req, res) {
     const userId = req.params.id;
     // Find user before update
     User.findByPk(userId)
@@ -168,6 +185,72 @@ function editUser(req, res) {
         });
 }
 
+/** 
+ * Change user is password
+ */
+
+function setPassword(req, res) {
+    const curentPassword = req.body.password;
+    const newPassword = req.body.new_password;
+    const rePassword = req.body.re_password; // retyped new password
+    if (curentPassword === undefined || newPassword === undefined || rePassword === undefined) {
+        // attrs missing
+        res.status(403).json({
+            valid: false,
+            message: "Missing attributes",
+        })
+    } else {
+        // check if new pass and re_pass match
+        if (newPassword !== rePassword) {
+            // pass dose not match
+            res.status(406).json({
+                valid: false,
+                message: "New password and Retyped password dose not match"
+            })
+        } else {
+            // new pass and re_pass matches
+            const userId = req.params.id;
+            User.findByPk(userId)
+                .then(response => {
+                    if (response === null) {
+                        res.status(404).json({
+                            valid: false,
+                            message: "User not found",
+                        })
+                    } else {
+                        // user found
+                        // validate if old pass matches saved pass
+                        if (passwordHash.verify(curentPassword, response.password)) {
+                            // send and saved pass matches
+                            response.password = newPassword;
+                            response.save()
+                                .then(response => {
+                                    res.status(200).json({
+                                        valid: true,
+                                        message: "Password changed"
+                                    })
+                                })
+                                .catch(err => {
+                                    res.status(500).json({
+                                        valid: false,
+                                        message: "Password update error"
+                                    })
+                                })
+                        } else {
+                            res.status(406).json({
+                                valid: false,
+                                message: "Password incorrect"
+                            })
+                        }
+                    }
+                })
+                .catch(err => {
+
+                });
+        }
+    }
+}
+
 /**
  * Delete user
  */
@@ -205,6 +288,7 @@ module.exports = {
     addUser,
     authenticate,
     getUser,
-    editUser,
+    setUser,
+    setPassword,
     deleteUser
 }
