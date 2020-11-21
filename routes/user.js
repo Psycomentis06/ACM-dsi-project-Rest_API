@@ -35,7 +35,15 @@ router.get('/:id', adminAuth, (req, res) => {
  */
 
 router.put('/:id'/*, superAdminAuth*/, (req, res) => {
-  userController.editUser(req, res);
+  userController.setUser(req, res);
+});
+
+/**
+ * Edit user password
+ */
+
+router.put('/:id/password', /* userAuth ,*/(req, res) => {
+  userController.setPassword(req , res);
 });
 
 /**
