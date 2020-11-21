@@ -168,9 +168,43 @@ function editUser(req, res) {
         });
 }
 
+/**
+ * Delete user
+ */
+
+function deleteUser(req, res) {
+    const userId = req.params.id;
+    User.findByPk(userId)
+        .then(response => {
+            if (response === null) {
+                // user not found
+                res.status(404).json({
+                    valid: false,
+                    message: "User not found"
+                })
+            } else {
+                // user found
+                response.destroy()
+                    .then(response => {
+                        res.status(200).json({
+                            valid: true,
+                            message: "User deleted"
+                        })
+                    })
+            }
+        })
+        .catch(err => {
+            res.status(500).json({
+                valid: false,
+                error: "User Delete error"
+            })
+        });
+}
+
 module.exports = {
     addUser,
     authenticate,
     getUser,
-    editUser
+    editUser,
+    deleteUser
 }
