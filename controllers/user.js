@@ -1,7 +1,7 @@
 const User = require('../models/user');
 const passwordHash = require('password-hash');
 const jwt = require('jsonwebtoken');
-
+const mailer = require('../mailer');
 
 /** 
  * Create user
@@ -29,8 +29,24 @@ function addUser(req, res) {
         password: passwordHash.generate(password)
     })
         .then(response => {
+            // user added in database and we will send email to verify the account
+            mailer.sendMail({
+                from: process.env.MAIL_SENDER,
+                to: email,
+                subject: "Email verification",
+                template: 'email_verification',
+                context: {
+                    mail: email,
+                    vkey: response.vkey,
+                    name: firstName + ' ' + lastName
+                }
+            }).then(response => {
+                console.log(response);
+            }).catch(err => {
+                console.log(err);
+            })
+            // response
             res.json({
-                data: response,
                 valid: true,
                 message: "User added successfuly"
             })
@@ -40,7 +56,7 @@ function addUser(req, res) {
             err.errors.map(element => {
                 errMsg.push(element.message);
             })
-            res.json({
+            res.status(403).json({
                 valid: false,
                 error: errMsg
             })
