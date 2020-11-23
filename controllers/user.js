@@ -360,7 +360,7 @@ function deleteUser(req, res) {
  */
 
  function getPasswordVkey(req, res) {
-     const userId = req.body.id;
+     const userId = req.params.id;
      User.findByPk(userId)
      .then(response => {
         if (response === null) {
@@ -386,10 +386,11 @@ function deleteUser(req, res) {
                 })
             })
             .catch(err => {
-                res.status(500).json({
+                /*res.status(500).json({
                     valid: false,
                     message: "Error while sending email to user"
-                })
+                })*/
+                console.log(err);
             })
         }
      })
