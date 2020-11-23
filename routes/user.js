@@ -86,4 +86,12 @@ router.delete('/:id'/*, superAdminAuth*/, (req, res) => {
    userController.addPhone(req, res);
  })
 
+ /**
+  * Add bio
+  */
+
+  router.put('/:id/bio', (req, res) => {
+    userController.addBio(req, res);
+  })
+
 module.exports = router;

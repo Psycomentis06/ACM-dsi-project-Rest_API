@@ -496,6 +496,53 @@ function addPhone(req, res) {
             })
         } else {
             User.findByPk(userId)
+                .then(response => {
+                    if (response === null) {
+                        res.status(404).json({
+                            valid: false,
+                            message: "User not found"
+                        })
+                    } else {
+                        response.phoneNumber = phoneNumber;
+                        response.save()
+                            .then(response => {
+                                res.status(200).json({
+                                    valid: true,
+                                    message: "Phone added"
+                                })
+                            })
+                            .catch(err => {
+                                res.status(500).json({
+                                    valid: false,
+                                    message: "Phone not added due to an error during the operation"
+                                })
+                            })
+                    }
+                })
+                .catch(err => {
+                    res.status(500).json({
+                        valid: false,
+                        message: "Error"
+                    })
+                })
+        }
+    }
+}
+
+/**
+ * Add Bio (Description)
+ */
+
+function addBio(req, res) {
+    const userId = req.params.id;
+    const bio = req.body.bio;
+    if (bio === undefined) {
+        res.status(403).json({
+            valid: false,
+            message: "Bio attribute is missing"
+        })
+    } else {
+        User.findByPk(userId)
             .then(response => {
                 if (response === null) {
                     res.status(404).json({
@@ -503,18 +550,18 @@ function addPhone(req, res) {
                         message: "User not found"
                     })
                 } else {
-                    response.phoneNumber = phoneNumber;
+                    response.bio = bio;
                     response.save()
                     .then(response => {
                         res.status(200).json({
                             valid: true,
-                            message: "Phone added"
+                            message: "Bio added successfuly"
                         })
                     })
                     .catch(err => {
                         res.status(500).json({
                             valid: false,
-                            message: "Phone not added due to an error during the operation"
+                            message: "Bio not added due to an error"
                         })
                     })
                 }
@@ -522,22 +569,22 @@ function addPhone(req, res) {
             .catch(err => {
                 res.status(500).json({
                     valid: false,
-                    message: "Error"
+                    message: "Add Bio error"
                 })
             })
-        }
     }
 }
 
-    module.exports = {
-        addUser,
-        authenticate,
-        getUser,
-        setUser,
-        setPassword,
-        getPasswordVkey,
-        resetPassword,
-        deleteUser,
-        activateUser,
-        addPhone
-    }
+module.exports = {
+    addUser,
+    authenticate,
+    getUser,
+    setUser,
+    setPassword,
+    getPasswordVkey,
+    resetPassword,
+    deleteUser,
+    activateUser,
+    addPhone,
+    addBio
+}
