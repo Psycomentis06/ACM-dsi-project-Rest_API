@@ -286,6 +286,14 @@ function setPassword(req, res) {
         } else {
             const newPassword = req.body.new_password;
             const rePassword = req.body.re_password;
+            const passwordVkey = req.body.password_vkey;
+            if (newPassword === undefined || rePassword === undefined || passwordVkey === undefined) {
+                // no data sent in body or some is missing
+                return res.status(403).json({
+                    valid: false,
+                    message: "Attributes missing"
+                })
+            }
             if (newPassword !== rePassword) {
                 // password and retyped password don't match
                 res.status(406).json({
@@ -294,7 +302,6 @@ function setPassword(req, res) {
                 })
             } else {
                 // valid password
-                const passwordVkey = req.body.password_vkey;
                 if (response.passwordVkey !== passwordVkey) {
                     // Wrong validation key sent
                     res.status(403).json({
