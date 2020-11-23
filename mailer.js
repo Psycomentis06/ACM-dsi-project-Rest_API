@@ -18,9 +18,9 @@ var transporter = nodemailer.createTransport({
 
 transporter.use('compile', hbs({
     viewEngine: {
-        extname: '.hbs', // handlebars extension
+        extname: 'hbs', // handlebars extension
         layoutsDir: 'templates', // location of handlebars templates
-        defaultLayout: 'email_verification', // name of main template
+        defaultLayout: false, // name of main template
     },
     viewPath: "templates",
     extName: '.hbs'
