@@ -2,6 +2,8 @@ const User = require('../models/user');
 const passwordHash = require('password-hash');
 const jwt = require('jsonwebtoken');
 const mailer = require('../mailer');
+const { response } = require('express');
+const transporter = require('../mailer');
 
 /** 
  * Create user
@@ -354,6 +356,52 @@ function deleteUser(req, res) {
 }
 
 /**
+ * Get password verification key
+ */
+
+ function getPasswordVkey(req, res) {
+     const userId = req.body.id;
+     User.findByPk(userId)
+     .then(response => {
+        if (response === null) {
+            res.status(404).json({
+                valid: false,
+                message: "User not found"
+            })
+        } else {
+            transporter.sendMail({
+                from: process.env.MAIL_SENDER,
+                to: response.email,
+                subject: "Password Reset",
+                template: "reset_password",
+                context: {
+                    vkey: response.passwordVkey,
+                    name: response.firstName + ' ' + response.lastName
+                }
+            })
+            .then(response => {
+                res.status(200).json({
+                    valid: true,
+                    message: "Email sent to user email"
+                })
+            })
+            .catch(err => {
+                res.status(500).json({
+                    valid: false,
+                    message: "Error while sending email to user"
+                })
+            })
+        }
+     })
+     .catch(err => {
+         res.status(406).json({
+             valid: false,
+             message: "Send password key error"
+         })
+     })
+ }
+
+/**
  * Activate account
  */
 
@@ -426,6 +474,7 @@ module.exports = {
     getUser,
     setUser,
     setPassword,
+    getPasswordVkey,
     resetPassword,
     deleteUser,
     activateUser
