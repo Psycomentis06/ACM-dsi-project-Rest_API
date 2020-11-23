@@ -273,61 +273,61 @@ function setPassword(req, res) {
  * Reset user is password (Forget password case)
  */
 
- function resetPassword(req, res) {
-     const userId = req.params.id;
-     User.findByPk(userId)
-     .then(response => {
-        if (response === null) {
-            // user not found
-            res.status(404).json({
-                valid: false,
-                message: "User not found"
-            })
-        } else {
-            const newPassword = req.body.new_password;
-            const rePassword = req.body.re_password;
-            const passwordVkey = req.body.password_vkey;
-            if (newPassword === undefined || rePassword === undefined || passwordVkey === undefined) {
-                // no data sent in body or some is missing
-                return res.status(403).json({
+function resetPassword(req, res) {
+    const userId = req.params.id;
+    User.findByPk(userId)
+        .then(response => {
+            if (response === null) {
+                // user not found
+                res.status(404).json({
                     valid: false,
-                    message: "Attributes missing"
-                })
-            }
-            if (newPassword !== rePassword) {
-                // password and retyped password don't match
-                res.status(406).json({
-                    valid: false,
-                    message: "Password and Retyped password not match"
+                    message: "User not found"
                 })
             } else {
-                // valid password
-                if (response.passwordVkey !== passwordVkey) {
-                    // Wrong validation key sent
-                    res.status(403).json({
+                const newPassword = req.body.new_password;
+                const rePassword = req.body.re_password;
+                const passwordVkey = req.body.password_vkey;
+                if (newPassword === undefined || rePassword === undefined || passwordVkey === undefined) {
+                    // no data sent in body or some is missing
+                    return res.status(403).json({
                         valid: false,
-                        message: "Invalid verification key"
-                    })
-                } else {
-                    // every think is good to change password
-                    response.password = passwordHash.generate(newPassword); // hash new pass
-                    response.passwordVkey = Math.floor(100000 + Math.random() * 900000) // generate new key
-                    response.save();
-                    res.status(200).json({
-                        valid: true,
-                        message: "Password changed successfuly"
+                        message: "Attributes missing"
                     })
                 }
+                if (newPassword !== rePassword) {
+                    // password and retyped password don't match
+                    res.status(406).json({
+                        valid: false,
+                        message: "Password and Retyped password not match"
+                    })
+                } else {
+                    // valid password
+                    if (response.passwordVkey !== passwordVkey) {
+                        // Wrong validation key sent
+                        res.status(403).json({
+                            valid: false,
+                            message: "Invalid verification key"
+                        })
+                    } else {
+                        // every think is good to change password
+                        response.password = passwordHash.generate(newPassword); // hash new pass
+                        response.passwordVkey = Math.floor(100000 + Math.random() * 900000) // generate new key
+                        response.save();
+                        res.status(200).json({
+                            valid: true,
+                            message: "Password changed successfuly"
+                        })
+                    }
+                }
             }
-        }
-     })
-     .catch(err => {
-         res.status(401).json({
-             valid: false,
-             message: "Reset password error"
-         })
-     })
- }
+        })
+        .catch(err => {
+            res.status(401).json({
+                valid: false,
+                message: "Reset password error"
+            })
+        })
+}
 
 /**
  * Delete user
@@ -366,48 +366,48 @@ function deleteUser(req, res) {
  * Get password verification key
  */
 
- function getPasswordVkey(req, res) {
-     const userId = req.params.id;
-     User.findByPk(userId)
-     .then(response => {
-        if (response === null) {
-            res.status(404).json({
-                valid: false,
-                message: "User not found"
-            })
-        } else {
-            transporter.sendMail({
-                from: process.env.MAIL_SENDER,
-                to: response.email,
-                subject: "Password Reset",
-                template: "reset_password",
-                context: {
-                    vkey: response.passwordVkey,
-                    name: response.firstName + ' ' + response.lastName
-                }
-            })
-            .then(response => {
-                res.status(200).json({
-                    valid: true,
-                    message: "Verification key sent to user email"
-                })
-            })
-            .catch(err => {
-                /*res.status(500).json({
+function getPasswordVkey(req, res) {
+    const userId = req.params.id;
+    User.findByPk(userId)
+        .then(response => {
+            if (response === null) {
+                res.status(404).json({
                     valid: false,
-                    message: "Error while sending email to user"
-                })*/
-                console.log(err);
+                    message: "User not found"
+                })
+            } else {
+                transporter.sendMail({
+                    from: process.env.MAIL_SENDER,
+                    to: response.email,
+                    subject: "Password Reset",
+                    template: "reset_password",
+                    context: {
+                        vkey: response.passwordVkey,
+                        name: response.firstName + ' ' + response.lastName
+                    }
+                })
+                    .then(response => {
+                        res.status(200).json({
+                            valid: true,
+                            message: "Verification key sent to user email"
+                        })
+                    })
+                    .catch(err => {
+                        /*res.status(500).json({
+                            valid: false,
+                            message: "Error while sending email to user"
+                        })*/
+                        console.log(err);
+                    })
+            }
+        })
+        .catch(err => {
+            res.status(406).json({
+                valid: false,
+                message: "Send password key error"
             })
-        }
-     })
-     .catch(err => {
-         res.status(406).json({
-             valid: false,
-             message: "Send password key error"
-         })
-     })
- }
+        })
+}
 
 /**
  * Activate account
@@ -476,14 +476,68 @@ function activateUser(req, res) {
     }
 }
 
-module.exports = {
-    addUser,
-    authenticate,
-    getUser,
-    setUser,
-    setPassword,
-    getPasswordVkey,
-    resetPassword,
-    deleteUser,
-    activateUser
+/**
+ * Add phone
+ */
+
+function addPhone(req, res) {
+    const userId = req.params.id;
+    const phoneNumber = Number(req.body.phone_number); // will NaN if it's not a number
+    if (phoneNumber === undefined) {
+        res.status(403).json({
+            valid: false,
+            message: "Phone number attribute is missing"
+        })
+    } else {
+        if (isNaN(phoneNumber)) {
+            res.status(403).json({
+                valid: false,
+                message: "Phone number must be numerical"
+            })
+        } else {
+            User.findByPk(userId)
+            .then(response => {
+                if (response === null) {
+                    res.status(404).json({
+                        valid: false,
+                        message: "User not found"
+                    })
+                } else {
+                    response.phoneNumber = phoneNumber;
+                    response.save()
+                    .then(response => {
+                        res.status(200).json({
+                            valid: true,
+                            message: "Phone added"
+                        })
+                    })
+                    .catch(err => {
+                        res.status(500).json({
+                            valid: false,
+                            message: "Phone not added due to an error during the operation"
+                        })
+                    })
+                }
+            })
+            .catch(err => {
+                res.status(500).json({
+                    valid: false,
+                    message: "Error"
+                })
+            })
+        }
+    }
 }
+
+    module.exports = {
+        addUser,
+        authenticate,
+        getUser,
+        setUser,
+        setPassword,
+        getPasswordVkey,
+        resetPassword,
+        deleteUser,
+        activateUser,
+        addPhone
+    }
