@@ -268,6 +268,59 @@ function setPassword(req, res) {
 }
 
 /**
+ * Reset user is password (Forget password case)
+ */
+
+ function resetPassword(req, res) {
+     const userId = req.params.id;
+     User.findByPk(userId)
+     .then(response => {
+        if (response === null) {
+            // user not found
+            res.status(404).json({
+                valid: false,
+                message: "User not found"
+            })
+        } else {
+            const newPassword = req.body.new_password;
+            const rePassword = req.body.re_password;
+            if (newPassword !== rePassword) {
+                // password and retyped password don't match
+                res.status(406).json({
+                    valid: false,
+                    message: "Password and Retyped password not match"
+                })
+            } else {
+                // valid password
+                const passwordVkey = req.body.password_vkey;
+                if (response.passwordVkey !== passwordVkey) {
+                    // Wrong validation key sent
+                    res.status(403).json({
+                        valid: false,
+                        message: "Invalid verification key"
+                    })
+                } else {
+                    // every think is good to change password
+                    response.password = passwordHash.generate(newPassword); // hash new pass
+                    response.passwordVkey = Math.floor(100000 + Math.random() * 900000) // generate new key
+                    response.save();
+                    res.status(200).json({
+                        valid: true,
+                        message: "Password changed successfuly"
+                    })
+                }
+            }
+        }
+     })
+     .catch(err => {
+         res.status(401).json({
+             valid: false,
+             message: "Reset password error"
+         })
+     })
+ }
+
+/**
  * Delete user
  */
 
@@ -373,6 +426,7 @@ module.exports = {
     getUser,
     setUser,
     setPassword,
+    resetPassword,
     deleteUser,
     activateUser
 }
