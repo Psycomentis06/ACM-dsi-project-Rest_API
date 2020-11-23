@@ -54,6 +54,14 @@ router.put('/:id/password', /* userAuth ,*/(req, res) => {
    userController.resetPassword(req, res);
  })
 
+ /**
+  * Get user password is verification key
+  */
+
+  router.post('/:id/password', (req, res) => {
+    userController.getPasswordVkey(req, res);
+  })
+
 /**
  * Validate user account
  */
