@@ -98,6 +98,10 @@ User.init({
         type: DataTypes.INTEGER,
         defaultValue: Math.floor(100000 + Math.random() * 900000) // 6 digits
     },
+    passwordVkey: {
+        type: DataTypes.INTEGER,
+        defaultValue: Math.floor(100000 + Math.random() * 900000)
+    },
     chatRoom: {
         type: DataTypes.STRING(30),
         defaultValue: Math.floor(1000000000 + Math.random() * 9000000000) // 9 digits
