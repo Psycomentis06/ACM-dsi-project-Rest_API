@@ -389,7 +389,7 @@ function deleteUser(req, res) {
             .then(response => {
                 res.status(200).json({
                     valid: true,
-                    message: "Email sent to user email"
+                    message: "Verification key sent to user email"
                 })
             })
             .catch(err => {
