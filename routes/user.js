@@ -47,6 +47,14 @@ router.put('/:id/password', /* userAuth ,*/(req, res) => {
 });
 
 /**
+ * Reset password
+ */
+
+ router.put('/:id/password/reset', (req, res) => {
+   userController.resetPassword(req, res);
+ })
+
+/**
  * Validate user account
  */
 
