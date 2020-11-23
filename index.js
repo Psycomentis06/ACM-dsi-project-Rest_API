@@ -26,6 +26,10 @@ admin.initializeApp({
     databaseURL: "https://dsi3-project.firebaseio.com/"
 })
 // Routes
+app.use('/', express.static('public')) // Documentation page
+app.get('/', (req, res) => {
+    res.send('index.html');
+})
 const userRoutes = require('./routes/user');
 app.use(API_BASE_URI+"user", userRoutes);
 
