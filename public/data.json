@@ -1,0 +1,188 @@
+{
+    "user": [
+        {
+            "uri": "/api/v1/user",
+            "method": "GET",
+            "permission": [
+                "user",
+                "admin",
+                "super admin"
+            ],
+            "description": "Return user data",
+            "response keys": {
+                "valid": "boolean",
+                "data": "object",
+                "error": "string"
+            }
+        },
+        {
+            "uri": "/api/v1/user",
+            "method": "GET",
+            "permission": [
+                "user",
+                "admin",
+                "super admin"
+            ],
+            "description": "Return user data",
+            "response keys": {
+                "valid": "boolean",
+                "data": "object",
+                "error": "string"
+            }
+        },
+        {
+            "uri": "/api/v1/user",
+            "method": "GET",
+            "permission": [
+                "user",
+                "admin",
+                "super admin"
+            ],
+            "description": "Return user data",
+            "response keys": {
+                "valid": "boolean",
+                "data": "object",
+                "error": "string"
+            }
+        },
+        {
+            "uri": "/api/v1/user",
+            "method": "GET",
+            "permission": [
+                "user",
+                "admin",
+                "super admin"
+            ],
+            "description": "Return user data",
+            "response keys": {
+                "valid": "boolean",
+                "data": "object",
+                "error": "string"
+            }
+        }
+    ],
+    "product": [
+        {
+            "uri": "/api/v1/user",
+            "method": "DELETE",
+            "permission": [
+                "user",
+                "admin",
+                "super admin"
+            ],
+            "description": "Return user data",
+            "response keys": {
+                "valid": "boolean",
+                "data": "object",
+                "error": "string"
+            }
+        },
+        {
+            "uri": "/api/v1/user",
+            "method": "GET",
+            "permission": [
+                "user",
+                "admin",
+                "super admin"
+            ],
+            "description": "Return user data",
+            "response keys": {
+                "valid": "boolean",
+                "data": "object",
+                "error": "string"
+            }
+        },
+        {
+            "uri": "/api/v1/user",
+            "method": "DELETE",
+            "permission": [
+                "user",
+                "admin",
+                "super admin"
+            ],
+            "description": "Return user data",
+            "response keys": {
+                "valid": "boolean",
+                "data": "object",
+                "error": "string"
+            }
+        },
+        {
+            "uri": "/api/v1/user",
+            "method": "GET",
+            "permission": [
+                "user",
+                "admin",
+                "super admin"
+            ],
+            "description": "Return user data",
+            "response keys": {
+                "valid": "boolean",
+                "data": "object",
+                "error": "string"
+            }
+        }
+    ],
+    "order": [
+        {
+            "uri": "/api/v1/user",
+            "method": "DELETE",
+            "permission": [
+                "user",
+                "admin",
+                "super admin"
+            ],
+            "description": "Return user data",
+            "response keys": {
+                "valid": "boolean",
+                "data": "object",
+                "error": "string"
+            }
+        },
+        {
+            "uri": "/api/v1/user",
+            "method": "GET",
+            "permission": [
+                "user",
+                "admin",
+                "super admin"
+            ],
+            "description": "Return user data",
+            "response keys": {
+                "valid": "boolean",
+                "data": "object",
+                "error": "string"
+            }
+        },
+        {
+            "uri": "/api/v1/user",
+            "method": "GET",
+            "permission": [
+                "user",
+                "admin",
+                "super admin"
+            ],
+            "description": "Return user data",
+            "response keys": {
+                "valid": "boolean",
+                "data": "object",
+                "error": "string"
+            }
+        },
+        {
+            "uri": "/api/v1/user",
+            "method": "GET",
+            "permission": [
+                "user",
+                "admin",
+                "super admin"
+            ],
+            "description": "Return user data",
+            "response keys": {
+                "valid": "boolean",
+                "data": "object",
+                "error": "string"
+            }
+        }
+    ]
+}
