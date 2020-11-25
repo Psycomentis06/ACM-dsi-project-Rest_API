@@ -594,19 +594,48 @@ function addBio(req, res) {
                 message: "User not found"
             })
         } else {
-            response.address = req.body.address;
-            response.address = req.body.country;
-            response.address = req.body.city;
-            response.save()
-            .then(response => {
-                res.status(200).json({
+            const address = req.body.address;
+            const city = req.body.city;
+            const country = req.body.country;
+            var addedItems = [];
+            // add value which dose not equal undifined and diffrent from the valud in database
+            if (address !== undefined && response.address !==  address) {
+                response.address = req.body.address;
+                addedItems.push('Address added');
+            }
+            if (country !== undefined && response.country !==  country) {
+                response.country = req.body.country;
+                addedItems.push('Country added');
+            }
+            if (city !== undefined && response.city !==  city) {
+                response.city = req.body.city;
+                addedItems.push('City added');
+            }
+            if (addedItems.length === 0) {
+                // no data added
+                res.status(202).json({
                     valid: true,
-                    message: "City, Address and Country added"
+                    message: "No data added"
                 })
-            })
-            .catch(err => {
-                res.send(err);
-            })
+            } else {
+                response.save()
+                .then(response => {
+                    res.status(200).json({
+                        valid: true,
+                        message: addedItems
+                    })
+                })
+                .catch(err => {
+                    let errorMsg = [];
+                    err.errors.map(element => {
+                        errorMsg.push(element.message);
+                    })
+                    res.status(403).json({
+                        valid: false,
+                        error: errorMsg
+                    })
+                })
+            }
         }
      })
      .catch(err => {
