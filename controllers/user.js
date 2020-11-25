@@ -15,7 +15,12 @@ function addUser(req, res) {
     var lastName = req.body.last_name;
     var email = req.body.email;
     var password = req.body.password;
-
+    if (password === undefined) {
+        return res.status(403).json({
+            valid: false,
+            message: "Password is required"
+        })
+    }
     if (password.length > 16 || password.length < 8) {
         res.json({
             valid: false,
