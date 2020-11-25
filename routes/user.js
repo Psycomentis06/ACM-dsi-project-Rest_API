@@ -94,4 +94,12 @@ router.delete('/:id'/*, superAdminAuth*/, (req, res) => {
     userController.addBio(req, res);
   })
 
+  /**
+   * Add Address city and country
+   */
+
+   router.put('/:id/address', (req, res) => {
+     userController.addAddress(req, res);
+   })
+
 module.exports = router;

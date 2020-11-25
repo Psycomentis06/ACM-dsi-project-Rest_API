@@ -575,6 +575,43 @@ function addBio(req, res) {
     }
 }
 
+/**
+ * Add address and country
+ */
+
+ function addAddress(req, res) {
+     const userId = req.params.id;
+     User.findByPk(userId)
+     .then(response => {
+        if (response === null) {
+            res.status(404).json({
+                valid: false,
+                message: "User not found"
+            })
+        } else {
+            response.address = req.body.address;
+            response.address = req.body.country;
+            response.address = req.body.city;
+            response.save()
+            .then(response => {
+                res.status(200).json({
+                    valid: true,
+                    message: "City, Address and Country added"
+                })
+            })
+            .catch(err => {
+                res.send(err);
+            })
+        }
+     })
+     .catch(err => {
+        res.status(500).json({
+            valid: false,
+            message: "User error"
+        })
+     })
+ }
+
 module.exports = {
     addUser,
     authenticate,
@@ -586,5 +623,6 @@ module.exports = {
     deleteUser,
     activateUser,
     addPhone,
-    addBio
+    addBio,
+    addAddress
 }
