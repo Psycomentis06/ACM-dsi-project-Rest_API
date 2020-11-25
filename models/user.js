@@ -83,18 +83,29 @@ User.init({
         }
     },
     address: {
-        type: DataTypes.STRING(50),
-        allowNull: true
+        type: DataTypes.STRING(150),
+        defaultValue: "empty",
+        validate: {
+            len: {
+                args: [3, 60],
+                msg: "Address name length must be between 3 and 150"
+            }
+        }
     },
     country: {
         type: DataTypes.STRING(30),
-        allowNull: true
+        defaultValue: "empty",
+        validate: {
+            len: {
+                args: [3, 30],
+                msg: "Country name length must be between 3 and 30"
+            }
+        }
     },
     city: {
         type: DataTypes.STRING(60),
-        allowNull: true,
+        defaultValue: "empty",
         validate: {
-            isNull: true,
             len: {
                 args: [3, 60],
                 msg: "City name length must be between 3 and 60"
