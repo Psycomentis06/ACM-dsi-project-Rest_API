@@ -90,6 +90,17 @@ User.init({
         type: DataTypes.STRING(30),
         allowNull: true
     },
+    city: {
+        type: DataTypes.STRING(60),
+        allowNull: true,
+        validate: {
+            isNull: true,
+            len: {
+                args: [3, 60],
+                msg: "City name length must be between 3 and 60"
+            }
+        }
+    },
     bio: {
         type: DataTypes.TEXT,
         allowNull: true
