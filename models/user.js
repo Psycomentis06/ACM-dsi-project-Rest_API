@@ -88,7 +88,7 @@ User.init({
         validate: {
             len: {
                 args: [3, 60],
-                msg: "Address name length must be between 3 and 150"
+                msg: "Address length must be between 3 and 150"
             }
         }
     },
@@ -98,7 +98,10 @@ User.init({
         validate: {
             len: {
                 args: [3, 30],
-                msg: "Country name length must be between 3 and 30"
+                msg: "Country length must be between 3 and 30"
+            },
+            isAlpha: {
+                msg: "Country should not contain numbers"
             }
         }
     },
@@ -108,7 +111,10 @@ User.init({
         validate: {
             len: {
                 args: [3, 60],
-                msg: "City name length must be between 3 and 60"
+                msg: "City length must be between 3 and 60"
+            },
+            isAlpha: {
+                msg: "City should not contain numbers"
             }
         }
     },
