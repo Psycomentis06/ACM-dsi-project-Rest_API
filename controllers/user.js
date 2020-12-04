@@ -98,26 +98,26 @@ function authenticate(req, res) {
               expiresIn: "1h",
             }
           );
-          res.json({
+          res.status(200).json({
             valid: true,
             message: "Logged in",
             token: token,
           });
         } else {
-          res.json({
+          res.status(406).json({
             valid: false,
             message: "Wrong password",
           });
         }
       } else {
-        res.json({
+        res.status(404).json({
           valid: false,
           message: "Email dose not exist",
         });
       }
     })
     .catch((err) => {
-      res.json({
+      res.status(500).json({
         err: err.message,
         valid: false,
       });
