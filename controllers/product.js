@@ -20,7 +20,7 @@ function addProduct(req, res) {
     stock: stock,
   })
     .then((response) => {
-      res.json({
+      res.status(200).json({
         data: response,
         valid: true,
         message: "Product added successfuly",
@@ -31,7 +31,7 @@ function addProduct(req, res) {
       err.errors.map((element) => {
         errMsg.push(element.message);
       });
-      res.json({
+      res.status(401).json({
         valid: false,
         error: errMsg,
       });
@@ -48,9 +48,9 @@ function getproducts(req, res) {
           data: response,
         });
       } else {
-        res.status(404).json({
+        res.status(500).json({
           valid: false,
-          error: "Product not found",
+          error: "Data error",
         });
       }
     })
@@ -83,14 +83,14 @@ function getproduct(req, res) {
       } else {
         res.status(404).json({
           valid: false,
-          error: "product not found",
+          error: "Product not found",
         });
       }
     })
     .catch((err) => {
       res.status(404).json({
         valid: false,
-        error: "product error",
+        error: "Product error",
       });
     });
 }
@@ -101,7 +101,6 @@ function editProduct(req, res) {
   var store = req.body.store;
   var imageurl = req.body.imageurl;
   var backgroundcolor = req.body.backgroundcolor;
-  const titleproduct = req.params.title;
   const productid = req.params.id;
 
   Product.update(
@@ -115,10 +114,7 @@ function editProduct(req, res) {
     },
     {
       where: {
-        [Op.or]: {
-          title: titleproduct,
-          id: productid,
-        },
+        id: productid,
       }
         .then((response) => {
           if (response) {
@@ -130,14 +126,14 @@ function editProduct(req, res) {
           } else {
             res.status(404).json({
               valid: false,
-              error: "User not found",
+              error: "Product not found",
             });
           }
         })
         .catch((err) => {
           res.status(404).json({
             valid: false,
-            error: "User error",
+            error: "Product error",
           });
         }),
     }
@@ -156,14 +152,14 @@ function deletedproduct(req, res) {
       } else {
         res.status(404).json({
           valid: false,
-          error: "product not found",
+          error: "Product not found",
         });
       }
     })
     .catch((err) => {
       res.status(404).json({
         valid: false,
-        error: "product error",
+        error: "Product error",
       });
     });
 }
