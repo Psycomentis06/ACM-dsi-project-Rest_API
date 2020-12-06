@@ -681,7 +681,7 @@ function getUsers(req, res) {
   User.findAll({
     attributes: { exclude: ["password", "passwordVkey", "vkey"] },
     limit: Number(limit) || 1000,
-    offset: Number(offset) || 1000,
+    offset: Number(offset) || 0,
     where: {
       [Op.or]: {
         firstName: {
