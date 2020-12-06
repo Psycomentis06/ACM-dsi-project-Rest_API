@@ -677,8 +677,11 @@ function addAddress(req, res) {
 function getUsers(req, res) {
   const username = req.query.username; // not required
   const limit = req.query.limit; // not required
+  const offset = req.query.offset; // not required
   User.findAll({
+    attributes: { exclude: ["password", "passwordVkey", "vkey"] },
     limit: Number(limit) || 1000,
+    offset: Number(offset) || 1000,
     where: {
       [Op.or]: {
         firstName: {
@@ -699,7 +702,7 @@ function getUsers(req, res) {
     .catch((err) => {
       res.status(500).json({
         valid: false,
-        error: err,
+        error: "Get users",
       });
     });
 }
