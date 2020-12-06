@@ -135,6 +135,11 @@ User.init(
       type: DataTypes.STRING(30),
       defaultValue: () => Math.floor(1000000000 + Math.random() * 9000000000), // 9 digits
     },
+    photo: {
+      type: DataTypes.STRING(200),
+      defaultValue:
+        "https://images.unsplash.com/photo-1597357664116-6510db2a06b4?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=375&q=80",
+    },
   },
   {
     sequelize,
