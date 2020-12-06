@@ -3,7 +3,7 @@ const passwordHash = require("password-hash");
 const jwt = require("jsonwebtoken");
 const mailer = require("../mailer");
 const transporter = require("../mailer");
-
+const { Op } = require("sequelize");
 /**
  * Create user
  */
@@ -670,6 +670,40 @@ function addAddress(req, res) {
     });
 }
 
+/**
+ * Get all users
+ */
+
+function getUsers(req, res) {
+  const username = req.query.username; // not required
+  const limit = req.query.limit; // not required
+  User.findAll({
+    limit: Number(limit) || 1000,
+    where: {
+      [Op.or]: {
+        firstName: {
+          [Op.like]: "%" + (username || "") + "%",
+        },
+        lastName: {
+          [Op.like]: "%" + (username || "") + "%",
+        },
+      },
+    },
+  })
+    .then((response) => {
+      res.status(200).json({
+        valid: true,
+        users: response,
+      });
+    })
+    .catch((err) => {
+      res.status(500).json({
+        valid: false,
+        error: err,
+      });
+    });
+}
+
 module.exports = {
   addUser,
   authenticate,
@@ -683,4 +717,5 @@ module.exports = {
   addPhone,
   addBio,
   addAddress,
+  getUsers,
 };
