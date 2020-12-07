@@ -140,6 +140,16 @@ User.init(
       defaultValue:
         "https://images.unsplash.com/photo-1597357664116-6510db2a06b4?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=375&q=80",
     },
+    status: {
+      type: DataTypes.STRING(10),
+      defaultValue: "offline",
+      validate: {
+        isIn: {
+          args: ["offline", "online"],
+          msg: "Status should be online or offline",
+        },
+      },
+    },
   },
   {
     sequelize,
