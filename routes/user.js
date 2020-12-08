@@ -18,7 +18,7 @@ router.post("/add", (req, res) => {
  *  Get users
  */
 
-router.get("/all", (req, res) => {
+router.get("/all", adminAuth, (req, res) => {
   userController.getUsers(req, res);
 });
 
