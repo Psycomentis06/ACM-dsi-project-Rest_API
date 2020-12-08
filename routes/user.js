@@ -121,4 +121,12 @@ router.put("/:id/roles", (req, res) => {
   userController.setRoles(req, res);
 });
 
+/**
+ * Set status
+ */
+
+router.put("/:id/status", (req, res) => {
+  userController.setStatus(req, res);
+});
+
 module.exports = router;

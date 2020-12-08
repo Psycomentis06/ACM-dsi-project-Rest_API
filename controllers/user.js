@@ -766,6 +766,59 @@ function setRoles(req, res) {
     });
 }
 
+/**
+ * Set status
+ */
+
+function setStatus(req, res) {
+  const userId = req.params.id;
+  const userStatus = req.body.status;
+  if (!userStatus) {
+    return res.status(403).json({
+      valid: false,
+      message: "Status is missing",
+    });
+  }
+  User.findByPk(userId)
+    .then((response) => {
+      if (response === null) {
+        res.status(404).json({
+          valid: false,
+          message: "User not found",
+        });
+      } else {
+        if (response.status !== userStatus) {
+          response.status = userStatus;
+          response
+            .save()
+            .then((response) => {
+              res.status(200).json({
+                valid: true,
+                message: "User is " + response.status,
+              });
+            })
+            .catch((err) => {
+              res.status(500).json({
+                valid: false,
+                message: err.errors[0].message,
+              });
+            });
+        } else {
+          res.status(403).json({
+            valid: false,
+            message: "User already " + userStatus,
+          });
+        }
+      }
+    })
+    .catch((err) => {
+      res.status(500).json({
+        valid: false,
+        message: err.errors,
+      });
+    });
+}
+
 module.exports = {
   addUser,
   authenticate,
@@ -781,4 +834,5 @@ module.exports = {
   addAddress,
   getUsers,
   setRoles,
+  setStatus,
 };
