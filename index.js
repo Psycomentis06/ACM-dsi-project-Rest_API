@@ -22,9 +22,12 @@ app.use("/", express.static("public")); // Documentation page
 app.get("/", (req, res) => {
   res.send("index.html");
 });
+// User router
 const userRoutes = require("./routes/user");
 app.use(API_BASE_URI + "user", userRoutes);
-
+// Message router
+const messageRoutes = require("./routes/message");
+app.use(API_BASE_URI + "message", messageRoutes);
 app.listen(PORT, () => {
   console.log("Listen to localhost:" + PORT);
 });
