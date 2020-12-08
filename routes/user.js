@@ -113,4 +113,12 @@ router.put("/:id/address", (req, res) => {
   userController.addAddress(req, res);
 });
 
+/**
+ * Set role
+ */
+
+router.put("/:id/roles", (req, res) => {
+  userController.setRoles(req, res);
+});
+
 module.exports = router;

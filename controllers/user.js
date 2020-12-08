@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken");
 const mailer = require("../mailer");
 const transporter = require("../mailer");
 const { Op } = require("sequelize");
+const { response } = require("express");
 /**
  * Create user
  */
@@ -707,6 +708,64 @@ function getUsers(req, res) {
     });
 }
 
+/**
+ * Set user role
+ */
+
+function setRoles(req, res) {
+  const userId = req.params.id;
+  const role = req.body.role;
+  if (!role) {
+    return res.status(403).json({
+      valid: false,
+      message: "Role is missing",
+    });
+  }
+  User.findByPk(userId)
+    .then((response) => {
+      if (response === null) {
+        res.status(404).json({
+          valid: false,
+          message: "User not found",
+        });
+      } else {
+        if (response.roles !== role) {
+          response.roles = role;
+          response
+            .save()
+            .then((response) => {
+              res.status(200).json({
+                valid: true,
+                message:
+                  response.firstName +
+                  " " +
+                  response.lastName +
+                  " Role is changed to " +
+                  response.roles,
+              });
+            })
+            .catch((err) => {
+              res.status(500).json({
+                valid: false,
+                message: err.errors[0].message,
+              });
+            });
+        } else {
+          res.status(403).json({
+            valid: false,
+            message: "User already have " + role + " role",
+          });
+        }
+      }
+    })
+    .catch((err) => {
+      res.status(500).json({
+        valid: false,
+        message: err.errors[0].message,
+      });
+    });
+}
+
 module.exports = {
   addUser,
   authenticate,
@@ -721,4 +780,5 @@ module.exports = {
   addBio,
   addAddress,
   getUsers,
+  setRoles,
 };
