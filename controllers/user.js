@@ -90,9 +90,10 @@ function authenticate(req, res) {
         if (passwordHash.verify(password, response.password)) {
           const token = jwt.sign(
             {
-              id: user.id,
-              email: user.email,
-              role: user.roles,
+              id: response.id,
+              email: response.email,
+              role: response.roles,
+              activated: response.vkey === null ? true : false,
             },
             process.env.JWT_KEY,
             {
