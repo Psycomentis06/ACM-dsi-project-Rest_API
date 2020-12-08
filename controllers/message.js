@@ -22,7 +22,7 @@ function addRoom(req, res) {
         roomsRef.child("/" + response.chatRoom + "/").once("value", (data) => {
           if (data.exists()) {
             // room already exists
-            res.status(206).json({
+            res.status(405).json({
               valid: false,
               message: "Room already exists",
             });
