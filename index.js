@@ -1,7 +1,6 @@
 // imports
 var express = require("express");
 var app = express();
-var admin = require("firebase-admin");
 var cors = require("cors");
 // Constants
 var PORT = process.env.PORT || 4000;
@@ -17,12 +16,6 @@ app.use(function (err, req, res, next) {
     message:
       "Error in body parsing or maybe another problem. please check your body request JSON format or contact us for this bug",
   });
-});
-// Firebase init
-var serviceAccount = require("./dsi3-project-firebase-adminsdk-rl8cr-9e76e0fea6.json");
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-  databaseURL: "https://dsi3-project.firebaseio.com/",
 });
 // Routes
 app.use("/", express.static("public")); // Documentation page
