@@ -145,7 +145,7 @@ User.init(
       defaultValue: "offline",
       validate: {
         isIn: {
-          args: ["offline", "online"],
+          args: [["offline", "online"]],
           msg: "Status should be online or offline",
         },
       },
