@@ -19,11 +19,38 @@ function addRoom(req, res) {
         });
       } else {
         // user found so get chat room and check if it exists
-        roomsRef.once("value", (data) => {
-          console.log(data[response.chatRoom]);
-          res.status(200).json({
-            valid: true,
-          });
+        roomsRef.child("/" + response.chatRoom + "/").once("value", (data) => {
+          if (data.exists()) {
+            // room already exists
+            res.status(206).json({
+              valid: false,
+              message: "Room already exists",
+            });
+          } else {
+            roomsRef.child("/" + response.chatRoom + "/").set(
+              {
+                username: response.firstName + " " + response.lastName,
+                userId: response.id,
+                createdAt: fireAdmin.database.ServerValue.TIMESTAMP,
+                messages: {},
+              },
+              (a) => {
+                if (a) {
+                  // error
+                  res.status(500).json({
+                    valid: false,
+                    message:
+                      "Room not created due to an error please try again",
+                  });
+                } else {
+                  res.status(200).json({
+                    valid: true,
+                    message: "Room created",
+                  });
+                }
+              }
+            );
+          }
         });
       }
     })

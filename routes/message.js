@@ -17,7 +17,7 @@ router.get("/all", (req, res) => {
  * Add room
  */
 
-router.put("/addroom", (req, res) => {
+router.put("/:id/addroom", (req, res) => {
   messageController.addRoom(req, res);
 });
 
