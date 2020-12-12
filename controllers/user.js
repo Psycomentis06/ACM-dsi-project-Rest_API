@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken");
 const mailer = require("../mailer");
 const transporter = require("../mailer");
 const { Op } = require("sequelize");
-const { response } = require("express");
+const fireAdmin = require("../firebase.config");
 /**
  * Create user
  */
@@ -22,7 +22,7 @@ function addUser(req, res) {
     });
   }
   if (password.length > 16 || password.length < 8) {
-    res.json({
+    res(401).json({
       valid: false,
       error: "Password length should be greater than 8 lower than 16",
     });
@@ -55,8 +55,19 @@ function addUser(req, res) {
         .catch((err) => {
           console.log(err);
         });
-      // response
-      res.json({
+      // User created now we create Firebase chat room
+      fireAdmin
+        .database()
+        .ref("rooms")
+        .child(response.chatRoom)
+        .set({
+          createdAt: fireAdmin.database.ServerValue.TIMESTAMP,
+          userId: response.id,
+          username: response.firstName + " " + response.lastName,
+          userMessages: 0,
+          adminMessages: 0,
+        });
+      res.status(200).json({
         valid: true,
         message: "User added successfuly",
         id: response.dataValues.id,
