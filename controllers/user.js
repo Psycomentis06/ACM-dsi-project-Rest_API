@@ -6,6 +6,7 @@ const transporter = require("../mailer");
 const { Op } = require("sequelize");
 const fireAdmin = require("../firebase.config");
 const { response } = require("express");
+const { findAll } = require("../models/user");
 /**
  * Create user
  */
@@ -892,6 +893,34 @@ function addImage(req, res) {
       res.status(500).json({
         valid: false,
         message: "Image Upload error",
+      });
+    });
+}
+
+/**
+ * Get user Image
+ */
+
+function getImage(req, res) {
+  const userId = req.params.id;
+  User.findByPk(userId)
+    .then((response) => {
+      if (response === null) {
+        res.status(404).json({
+          valid: false,
+          message: "User not found",
+        });
+      } else {
+        res.status(200).json({
+          valid: true,
+          imageUrl: response.photo,
+        });
+      }
+    })
+    .catch((err) => {
+      res.status(500).json({
+        valid: false,
+        message: "Get image error",
       });
     });
 }
