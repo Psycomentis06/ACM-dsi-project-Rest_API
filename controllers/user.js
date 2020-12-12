@@ -5,6 +5,7 @@ const mailer = require("../mailer");
 const transporter = require("../mailer");
 const { Op } = require("sequelize");
 const fireAdmin = require("../firebase.config");
+const { response } = require("express");
 /**
  * Create user
  */
@@ -841,6 +842,60 @@ function setStatus(req, res) {
     });
 }
 
+/**
+ * Add user image
+ */
+
+function addImage(req, res) {
+  const userId = req.params.id;
+  const imageUrl = req.body.imageUrl;
+  if (imageUrl && imageUrl !== null && imageUrl.length < 10) {
+    return res.status(401).json({
+      valid: false,
+      message: "Invalid image source",
+    });
+  }
+  User.findByPk(userId)
+    .then((response) => {
+      if (response === null) {
+        res.status(404).json({
+          valid: false,
+          message: "User not found",
+        });
+      } else {
+        if (response.photo === imageUrl) {
+          res.status(401).json({
+            valid: false,
+            message: "Can't use same image",
+          });
+        } else {
+          response.photo = imageUrl;
+          response
+            .save()
+            .then((response) => {
+              res.status(200).json({
+                valid: true,
+                message: "Image added",
+              });
+            })
+            .catch((err) => {
+              res.status(500).json({
+                valid: false,
+                message:
+                  "Message not saved due to internal error please try again",
+              });
+            });
+        }
+      }
+    })
+    .catch((err) => {
+      res.status(500).json({
+        valid: false,
+        message: "Image Upload error",
+      });
+    });
+}
+
 module.exports = {
   addUser,
   authenticate,
@@ -857,4 +912,5 @@ module.exports = {
   getUsers,
   setRoles,
   setStatus,
+  addImage,
 };
