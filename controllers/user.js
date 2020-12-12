@@ -115,6 +115,16 @@ function authenticate(req, res) {
             valid: true,
             message: "Logged in",
             token: token,
+            data: {
+              id: response.id,
+              firstName: response.firstName,
+              lastName: response.lastName,
+              photo: response.photo,
+              chatRoom: response.chatRoom,
+              roles: response.roles,
+              activated: response.vkey !== null ? false : true,
+              email: response.email,
+            },
           });
         } else {
           res.status(406).json({
