@@ -129,4 +129,20 @@ router.put("/:id/status", (req, res) => {
   userController.setStatus(req, res);
 });
 
+/**
+ * Get user image
+ */
+
+router.get("/:id/photo", (req, res) => {
+  userController.getImage(req, res);
+});
+
+/**
+ * Set user image
+ */
+
+router.put("/:id/photo", (req, res) => {
+  userController.addImage(req, res);
+});
+
 module.exports = router;
