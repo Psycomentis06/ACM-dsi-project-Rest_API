@@ -942,4 +942,5 @@ module.exports = {
   setRoles,
   setStatus,
   addImage,
+  getImage,
 };
