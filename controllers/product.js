@@ -1,6 +1,4 @@
 const Product = require("../models/product");
-const jwt = require("jsonwebtoken");
-const data = require("../routes/data");
 const { Op } = require("sequelize");
 function addProduct(req, res) {
   // add product to database
