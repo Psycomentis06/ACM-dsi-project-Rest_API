@@ -25,6 +25,12 @@ app.get("/", (req, res) => {
 // User router
 const userRoutes = require("./routes/user");
 app.use(API_BASE_URI + "user", userRoutes);
+// Product router
+const productRoutes = require("./routes/product");
+app.use(API_BASE_URI + "product", productRoutes);
+// Order router
+const orderRoutes = require("./routes/contact");
+app.use(API_BASE_URI + "contact", orderRoutes);
 // Message router
 const messageRoutes = require("./routes/message");
 app.use(API_BASE_URI + "message", messageRoutes);
