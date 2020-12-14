@@ -16,6 +16,8 @@ function addProduct(req, res) {
     imageurl: imageurl,
     backgroundcolor: backgroundcolor,
     stock: stock,
+    category: req.body.category,
+    discount: req.body.discount
   })
     .then((response) => {
       res.status(200).json({
@@ -40,7 +42,7 @@ function getproducts(req, res) {
   Product.findAll()
     .then((response) => {
       if (response) {
-        // user found
+        // products found
         res.status(200).json({
           valid: true,
           data: response,
@@ -109,6 +111,8 @@ function editProduct(req, res) {
       imageurl: imageurl,
       backgroundcolor: backgroundcolor,
       store: store,
+      category: req.body.category,
+      discount: req.body.discount,
     },
     {
       where: {
