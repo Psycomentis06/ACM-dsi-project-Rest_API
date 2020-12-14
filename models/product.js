@@ -10,9 +10,6 @@ Product.init(
       type: DataTypes.STRING(30),
       allowNull: false,
       validate: {
-        isAlpha: {
-          msg: "Tilte must be letters only",
-        },
         len: {
           args: [3, 30],
           msg: "Tilte length should be greater than 3 lower than 15",
@@ -35,9 +32,6 @@ Product.init(
       type: DataTypes.TEXT,
       allowNull: false,
       validate: {
-        isAlpha: {
-          msg: "Description must be letters only",
-        },
         notNull: {
           msg: "Description is required",
         },

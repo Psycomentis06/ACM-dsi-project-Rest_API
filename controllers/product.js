@@ -17,7 +17,7 @@ function addProduct(req, res) {
     backgroundcolor: backgroundcolor,
     stock: stock,
     category: req.body.category,
-    discount: req.body.discount
+    discount: req.body.discount,
   })
     .then((response) => {
       res.status(200).json({
@@ -38,10 +38,10 @@ function addProduct(req, res) {
     });
 }
 
-function getproducts(req, res) {
+function getProducts(req, res) {
   Product.findAll()
     .then((response) => {
-      if (response) {
+      if (response !== null) {
         // products found
         res.status(200).json({
           valid: true,
@@ -167,7 +167,7 @@ function deletedproduct(req, res) {
 }
 module.exports = {
   addProduct,
-  getproducts,
+  getProducts,
   getproduct,
   editProduct,
   deletedproduct,

@@ -14,27 +14,27 @@ router.post("/add", adminAuth, (req, res) => {
 /**
  * Get product by id
  */
-router.get("/get/:id", (req, res) => {
+router.get("/:id", (req, res) => {
   ProductController.getproduct(req, res);
 });
 
 /**
  * Get  all product
  */
-router.get("/produit", (req, res) => {
-  ProductController.getproducts(req, res);
+router.get("/all", (req, res) => {
+  ProductController.getProducts(req, res);
   // res.send(data.products)
 });
 /**
  * Edit product
  */
-router.post("/edit/:id", adminAuth, (req, res) => {
+router.put("/:id", adminAuth, (req, res) => {
   ProductController.editProduct(req, res);
 });
 /**
  * Delete product
  */
-router.post("/delete/:id", adminAuth, (req, res) => {
+router.delete("/:id", adminAuth, (req, res) => {
   ProductController.deletedproduct(req, res);
 });
 module.exports = router;
