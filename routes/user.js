@@ -34,7 +34,7 @@ router.post("/authenticate", (req, res) => {
  * Get user by id
  */
 
-router.get("/:id", adminAuth, (req, res) => {
+router.get("/:id", userAuth, (req, res) => {
   userController.getUser(req, res);
 });
 
@@ -42,7 +42,7 @@ router.get("/:id", adminAuth, (req, res) => {
  * Edit user
  */
 
-router.put("/:id" /*, superAdminAuth*/, (req, res) => {
+router.put("/:id", superAdminAuth, (req, res) => {
   userController.setUser(req, res);
 });
 
@@ -50,12 +50,9 @@ router.put("/:id" /*, superAdminAuth*/, (req, res) => {
  * Edit user password
  */
 
-router.put(
-  "/:id/password",
-  /* userAuth ,*/ (req, res) => {
-    userController.setPassword(req, res);
-  }
-);
+router.put("/:id/password", userAuth, (req, res) => {
+  userController.setPassword(req, res);
+});
 
 /**
  * Reset password
@@ -85,7 +82,7 @@ router.put("/:id/verify", (req, res) => {
  * Delete user
  */
 
-router.delete("/:id" /*, superAdminAuth*/, (req, res) => {
+router.delete("/:id", superAdminAuth, (req, res) => {
   userController.deleteUser(req, res);
 });
 
@@ -93,7 +90,7 @@ router.delete("/:id" /*, superAdminAuth*/, (req, res) => {
  * Add phone
  */
 
-router.put("/:id/phone", (req, res) => {
+router.put("/:id/phone", userAuth, (req, res) => {
   userController.addPhone(req, res);
 });
 
@@ -101,7 +98,7 @@ router.put("/:id/phone", (req, res) => {
  * Add bio
  */
 
-router.put("/:id/bio", (req, res) => {
+router.put("/:id/bio", userAuth, (req, res) => {
   userController.addBio(req, res);
 });
 
@@ -109,7 +106,7 @@ router.put("/:id/bio", (req, res) => {
  * Add Address city and country
  */
 
-router.put("/:id/address", (req, res) => {
+router.put("/:id/address", userAuth, (req, res) => {
   userController.addAddress(req, res);
 });
 
@@ -117,7 +114,7 @@ router.put("/:id/address", (req, res) => {
  * Set role
  */
 
-router.put("/:id/roles", (req, res) => {
+router.put("/:id/roles", superAdminAuth, (req, res) => {
   userController.setRoles(req, res);
 });
 
@@ -125,7 +122,7 @@ router.put("/:id/roles", (req, res) => {
  * Set status
  */
 
-router.put("/:id/status", (req, res) => {
+router.put("/:id/status", userAuth, (req, res) => {
   userController.setStatus(req, res);
 });
 
@@ -133,7 +130,7 @@ router.put("/:id/status", (req, res) => {
  * Get user image
  */
 
-router.get("/:id/photo", (req, res) => {
+router.get("/:id/photo", userAuth, (req, res) => {
   userController.getImage(req, res);
 });
 
@@ -141,7 +138,7 @@ router.get("/:id/photo", (req, res) => {
  * Set user image
  */
 
-router.put("/:id/photo", (req, res) => {
+router.put("/:id/photo", userAuth, (req, res) => {
   userController.addImage(req, res);
 });
 
