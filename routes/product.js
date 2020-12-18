@@ -8,7 +8,7 @@ const ProductController = require("../controllers/product");
 /**
  * Add product
  */
-router.post("/add", adminAuth, (req, res) => {
+router.post("/add", superAdminAuth, (req, res) => {
   ProductController.addProduct(req, res);
 });
 /**
@@ -28,13 +28,13 @@ router.get("/all", (req, res) => {
 /**
  * Edit product
  */
-router.put("/:id", adminAuth, (req, res) => {
+router.put("/:id", superAdminAuth, (req, res) => {
   ProductController.editProduct(req, res);
 });
 /**
  * Delete product
  */
-router.delete("/:id", adminAuth, (req, res) => {
+router.delete("/:id", superAdminAuth, (req, res) => {
   ProductController.deletedproduct(req, res);
 });
 module.exports = router;
