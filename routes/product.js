@@ -11,12 +11,6 @@ const ProductController = require("../controllers/product");
 router.post("/add", superAdminAuth, (req, res) => {
   ProductController.addProduct(req, res);
 });
-/**
- * Get product by id
- */
-router.get("/:id", (req, res) => {
-  ProductController.getproduct(req, res);
-});
 
 /**
  * Get  all product
@@ -25,6 +19,14 @@ router.get("/all", (req, res) => {
   ProductController.getProducts(req, res);
   // res.send(data.products)
 });
+
+/**
+ * Get product by id
+ */
+router.get("/:id", (req, res) => {
+  ProductController.getproduct(req, res);
+});
+
 /**
  * Edit product
  */
