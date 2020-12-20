@@ -7,12 +7,12 @@ class Product extends Model {}
 Product.init(
   {
     title: {
-      type: DataTypes.STRING(30),
+      type: DataTypes.STRING(200),
       allowNull: false,
       validate: {
         len: {
-          args: [3, 30],
-          msg: "Tilte length should be greater than 3 lower than 15",
+          args: [3, 200],
+          msg: "Tilte length should be greater than 3 lower than 200",
         },
         notNull: {
           msg: "Tilte name is required",
