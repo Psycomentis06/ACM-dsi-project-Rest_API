@@ -28,9 +28,13 @@ function addProduct(req, res) {
     })
     .catch((err) => {
       let errMsg = [];
-      err.errors.map((element) => {
-        errMsg.push(element.message);
-      });
+      if (Array.isArray(err.errors)) {
+        err.errors.map((element) => {
+          errMsg.push(element.message);
+        });
+      } else {
+        errMsg.push(err.message);
+      }
       res.status(401).json({
         valid: false,
         error: errMsg,
