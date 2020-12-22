@@ -130,6 +130,7 @@ function authenticate(req, res) {
               bio: response.bio,
               address: response.address,
               country: response.country,
+              city: response.city,
             },
           });
         } else {
