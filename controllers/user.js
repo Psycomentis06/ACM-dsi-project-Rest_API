@@ -537,52 +537,45 @@ function activateUser(req, res) {
 
 function addPhone(req, res) {
   const userId = req.params.id;
-  const phoneNumber = Number(req.body.phone_number); // will NaN if it's not a number
+  const phoneNumber = req.body.phone_number; // will NaN if it's not a number
   if (phoneNumber === undefined) {
     res.status(403).json({
       valid: false,
       message: "Phone number attribute is missing",
     });
   } else {
-    if (isNaN(phoneNumber)) {
-      res.status(403).json({
-        valid: false,
-        message: "Phone number must be numerical",
-      });
-    } else {
-      User.findByPk(userId)
-        .then((response) => {
-          if (response === null) {
-            res.status(404).json({
-              valid: false,
-              message: "User not found",
-            });
-          } else {
-            response.phoneNumber = phoneNumber;
-            response
-              .save()
-              .then((response) => {
-                res.status(200).json({
-                  valid: true,
-                  message: "Phone added",
-                });
-              })
-              .catch((err) => {
-                res.status(500).json({
-                  valid: false,
-                  message:
-                    "Phone not added due to an error during the operation",
-                });
-              });
-          }
-        })
-        .catch((err) => {
-          res.status(500).json({
+    User.findByPk(userId)
+      .then((response) => {
+        if (response === null) {
+          res.status(404).json({
             valid: false,
-            message: "Error",
+            message: "User not found",
           });
+        } else {
+          response.phoneNumber = phoneNumber;
+          response
+            .save()
+            .then((response) => {
+              res.status(200).json({
+                valid: true,
+                message: "Phone added",
+              });
+            })
+            .catch((err) => {
+              console.log(err);
+              res.status(500).json({
+                valid: false,
+                message: "Phone not added due to an error during the operation",
+              });
+            });
+        }
+      })
+      .catch((err) => {
+        res.status(500).json({
+          valid: false,
+          message: "Error",
         });
-    }
+      });
   }
 }
 

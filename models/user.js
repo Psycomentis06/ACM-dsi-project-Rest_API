@@ -76,7 +76,7 @@ User.init(
       },
     },
     phoneNumber: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING(25),
       validate: {
         isNumeric: {
           msg: "Phone number should be numeric",
