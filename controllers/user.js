@@ -126,6 +126,10 @@ function authenticate(req, res) {
               roles: response.roles,
               activated: response.vkey !== null ? false : true,
               email: response.email,
+              phoneNumber: response.phoneNumber,
+              bio: response.bio,
+              address: response.address,
+              country: response.country,
             },
           });
         } else {
