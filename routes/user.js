@@ -42,7 +42,7 @@ router.get("/:id", userAuth, (req, res) => {
  * Edit user
  */
 
-router.put("/:id", superAdminAuth, (req, res) => {
+router.put("/:id", userAuth, (req, res) => {
   userController.setUser(req, res);
 });
 
