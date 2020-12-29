@@ -33,7 +33,7 @@ function addDay({ users = 0, likes = 0, orders = 0 }) {
  * set Users
  */
 
-function setUsers(action) {
+function setUsers() {
   History.findOne({ where: { day: new Date().toLocaleDateString() } })
     .then((response) => {
       if (response === null) {
