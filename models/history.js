@@ -1,12 +1,13 @@
 const { DataTypes, Model } = require("sequelize");
 const sequelize = require("../libs/db");
-
 class History extends Model {}
 
 History.init(
   {
     day: {
       type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: DataTypes.NOW,
     },
     loggedUsers: {
       type: DataTypes.INTEGER,
