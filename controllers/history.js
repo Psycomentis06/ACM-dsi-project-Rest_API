@@ -139,23 +139,27 @@ function setOrders() {
 
 function getHistory(req, res) {
   const day = req.query.date;
-  let dateToFind =
-    day === undefined && day === null
-      ? new Date().toLocaleDateString()
-      : new Date(day).toLocaleDateString();
+  let dateToFind = "";
+  if (day !== undefined && day !== null) {
+    console.log("gg");
+    dateToFind = new Date(day).toLocaleDateString();
+  } else {
+    dateToFind = new Date().toLocaleDateString();
+  }
+  console.log(dateToFind);
   History.findOne({ where: { day: dateToFind } })
     .then((response) => {
       if (response === null) {
         // return response based on day value if it's for today or chosen by user
+        res.status(404).json({
+          valid: false,
+          message: "Invalid date",
+        });
         if (day !== undefined && day !== null) {
+        } else {
           res.status(200).json({
             valid: true,
             message: "No data for today",
-          });
-        } else {
-          res.status(404).json({
-            valid: false,
-            message: "Invalid date",
           });
         }
       } else {
@@ -173,9 +177,17 @@ function getHistory(req, res) {
     });
 }
 
+/**
+ * Get history by month
+ * Return month histories by month or return current month by default
+ */
+
+function getHistoryByMonth() {}
+
 module.exports = {
   addDay,
   setUsers,
   setLikes,
   setOrders,
+  getHistory,
 };
