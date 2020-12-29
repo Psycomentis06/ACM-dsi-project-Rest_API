@@ -32,8 +32,11 @@ app.use(API_BASE_URI + "product", productRoutes);
 const orderRoutes = require("./routes/contact");
 app.use(API_BASE_URI + "contact", orderRoutes);
 // Message router
-const messageRoutes = require("./routes/message");
-app.use(API_BASE_URI + "message", messageRoutes);
+//const messageRoutes = require("./routes/message");
+//app.use(API_BASE_URI + "message", messageRoutes);
+// History
+const historyRoutes = require("./routes/history");
+app.use(API_BASE_URI + "history", historyRoutes);
 app.listen(PORT, () => {
   console.log("Listen to localhost:" + PORT);
 });
