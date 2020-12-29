@@ -9,15 +9,15 @@ History.init(
       type: DataTypes.DATE,
     },
     loggedUsers: {
-      type: DataTypes.NUMBER,
+      type: DataTypes.INTEGER,
       defaultValue: 0,
     },
     likedProducts: {
-      type: DataTypes.NUMBER,
+      type: DataTypes.INTEGER,
       defaultValue: 0,
     },
     orders: {
-      type: DataTypes.NUMBER,
+      type: DataTypes.INTEGER,
       defaultValue: 0,
     },
   },
