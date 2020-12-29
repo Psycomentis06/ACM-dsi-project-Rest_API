@@ -187,7 +187,7 @@ function getHistoryByMonth(req, res) {
     date = new Date(day);
   }
 
-  History.findOne({
+  History.findAll({
     where: {
       day: {
         [Op.between]: [
