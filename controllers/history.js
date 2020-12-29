@@ -1,4 +1,4 @@
-const { response } = require("express");
+const { Op } = require("sequelize");
 const History = require("../models/history");
 
 /**
@@ -141,12 +141,10 @@ function getHistory(req, res) {
   const day = req.query.date;
   let dateToFind = "";
   if (day !== undefined && day !== null) {
-    console.log("gg");
     dateToFind = new Date(day).toLocaleDateString();
   } else {
     dateToFind = new Date().toLocaleDateString();
   }
-  console.log(dateToFind);
   History.findOne({ where: { day: dateToFind } })
     .then((response) => {
       if (response === null) {
@@ -182,7 +180,36 @@ function getHistory(req, res) {
  * Return month histories by month or return current month by default
  */
 
-function getHistoryByMonth() {}
+function getHistoryByMonth(req, res) {
+  const day = req.query.date;
+  let date = new Date();
+  if (day !== undefined && day !== null) {
+    date = new Date(day);
+  }
+
+  History.findOne({
+    where: {
+      day: {
+        [Op.between]: [
+          date.getFullYear() + "-" + (date.getMonth() + 1) + "-1",
+          date.getFullYear() + "-" + (date.getMonth() + 1) + "-31",
+        ],
+      },
+    },
+  })
+    .then((response) => {
+      res.status(200).json({
+        valid: true,
+        data: response,
+      });
+    })
+    .catch((err) => {
+      res.status(500).json({
+        valid: false,
+        error: err.message,
+      });
+    });
+}
 
 module.exports = {
   addDay,
@@ -190,4 +217,5 @@ module.exports = {
   setLikes,
   setOrders,
   getHistory,
+  getHistoryByMonth,
 };
