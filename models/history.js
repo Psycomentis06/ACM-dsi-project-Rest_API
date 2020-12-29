@@ -5,7 +5,7 @@ class History extends Model {}
 History.init(
   {
     day: {
-      type: DataTypes.DATE,
+      type: DataTypes.DATEONLY,
       allowNull: false,
       defaultValue: DataTypes.NOW,
     },
