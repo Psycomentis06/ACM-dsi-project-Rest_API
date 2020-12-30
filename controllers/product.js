@@ -128,9 +128,9 @@ function editProduct(req, res) {
             });
           })
           .catch((err) => {
-            res.status(404).json({
+            res.status(403).json({
               valid: false,
-              error: "Product error",
+              error: err.message,
             });
           });
       } else {
