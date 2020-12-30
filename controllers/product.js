@@ -68,13 +68,9 @@ function getProducts(req, res) {
 function getproduct(req, res) {
   const id = req.params.id;
 
-  Product.findAll({
+  Product.findOne({
     where: {
-      [Op.or]: {
-        title: id,
-        id: id,
-        category: id,
-      },
+      id: id,
     },
   })
     .then((response) => {
