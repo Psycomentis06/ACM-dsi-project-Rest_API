@@ -103,43 +103,49 @@ function editProduct(req, res) {
   var backgroundcolor = req.body.backgroundcolor;
   const productid = req.params.id;
 
-  Product.update(
-    {
-      title: title,
-      price: price,
-      description: description,
-      imageurl: imageurl,
-      backgroundcolor: backgroundcolor,
-      stock: stock,
-      category: req.body.category,
-      discount: req.body.discount,
+  Product.findOne({
+    where: {
+      id: productid,
     },
-    {
-      where: {
-        id: productid,
-      }
-        .then((response) => {
-          if (response) {
-            // user found
+  })
+    .then((response) => {
+      if (response !== null) {
+        // user found
+        response.title = title;
+        response.price = price;
+        response.description = description;
+        response.imageurl = imageurl;
+        response.backgroundcolor = backgroundcolor;
+        response.stock = stock;
+        response.category = req.body.category;
+        response.discount = req.body.discount;
+        response
+          .save()
+          .then((response) => {
             res.status(200).json({
               valid: true,
-              data: response.dataValues,
+              message: "Updated",
             });
-          } else {
+          })
+          .catch((err) => {
             res.status(404).json({
               valid: false,
-              error: "Product not found",
+              error: "Product error",
             });
-          }
-        })
-        .catch((err) => {
-          res.status(404).json({
-            valid: false,
-            error: "Product error",
           });
-        }),
-    }
-  );
+      } else {
+        res.status(404).json({
+          valid: false,
+          error: "Product not found",
+        });
+      }
+    })
+    .catch((err) => {
+      res.status(404).json({
+        valid: false,
+        error: "Product error",
+      });
+    });
 }
 function deletedproduct(req, res) {
   const id = req.params.id;
