@@ -1,6 +1,5 @@
 const Order = require("../models/order");
-const jwt = require("jsonwebtoken");
-
+const historyController = require("./history");
 function addOrder(req, res) {
   // add user to database
   var tableproduct = req.body.id;
@@ -8,7 +7,6 @@ function addOrder(req, res) {
   var adress = req.body.address;
   var price = req.body.price;
   //var iduser = req.body.iduser;
-  console.log(req.body);
 
   for (let index = 0; index < tableproduct.length; index++) {
     Order.create({
@@ -25,7 +23,7 @@ function addOrder(req, res) {
           valid: true,
           message: "order added successfuly",
         });
-        console.log("cree");
+        historyController.setOrders();
       })
       .catch((err) => {
         let errMsg = [];
