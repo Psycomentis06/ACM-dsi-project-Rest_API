@@ -98,7 +98,7 @@ function editProduct(req, res) {
   var title = req.body.title;
   var price = req.body.price;
   var description = req.body.description;
-  var store = req.body.store;
+  var stock = req.body.stock;
   var imageurl = req.body.imageurl;
   var backgroundcolor = req.body.backgroundcolor;
   const productid = req.params.id;
@@ -110,7 +110,7 @@ function editProduct(req, res) {
       description: description,
       imageurl: imageurl,
       backgroundcolor: backgroundcolor,
-      store: store,
+      stock: stock,
       category: req.body.category,
       discount: req.body.discount,
     },
