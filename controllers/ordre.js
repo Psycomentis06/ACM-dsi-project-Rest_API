@@ -1,42 +1,46 @@
 const Order = require("../models/order");
-const historyController = require("./history");
+const jwt = require("jsonwebtoken");
+
 function addOrder(req, res) {
   // add user to database
-  var tableproduct = req.body.id;
+  var clientid = req.body.id;
+  var tableproduct = req.body.idp;
+  var tabletitle = req.body.title;
   var nbproduct = req.body.nb;
   var adress = req.body.address;
   var price = req.body.price;
   //var iduser = req.body.iduser;
 
-  for (let index = 0; index < tableproduct.length; index++) {
-    Order.create({
-      address: adress,
-      clientid: "1",
-      idproduct: tableproduct[index],
-      nproduct: nbproduct[index],
-      state: null,
-      price: price[index],
-    })
-      .then((response) => {
-        res.json({
-          data: response,
-          valid: true,
-          message: "order added successfuly",
-        });
-        historyController.setOrders();
-      })
-      .catch((err) => {
-        let errMsg = [];
-        err.errors.map((element) => {
-          errMsg.push(element.message);
-        });
-        res.json({
-          valid: false,
-          error: errMsg,
-        });
+  Order.create({
+    address: adress,
+    clientid: clientid,
+    productid: tableproduct,
+    producttitle: tabletitle,
+    nproduct: nbproduct,
+    state: null,
+    price: price,
+  })
+    .then((response) => {
+      res.json({
+        data: response,
+        valid: true,
+        message: "order added successfuly",
       });
-  }
+      console.log("cree");
+    })
+    .catch((err) => {
+      let errMsg = [];
+      err.errors.map((element) => {
+        errMsg.push(element.message);
+      });
+      res.json({
+        valid: false,
+        error: errMsg,
+      });
+    });
+  console.log("order add");
 }
+
 function getOrders(req, res) {
   const id = req.params.id;
   console.log(id);
@@ -63,16 +67,12 @@ function getOrders(req, res) {
     });
 }
 function getOrder(req, res) {
-  const iduser = req.params.iduser;
-  const iddelivery = req.params.iddelivery;
+  const iduser = req.params.idu;
+  const id = req.params.id;
   Order.findAll({
     where: {
-      rank: {
-        [Op.or]: {
-          iduser: iduser,
-          iddelivery: iddelivery,
-        },
-      },
+      clientid: iduser,
+      id: id,
     },
   })
     .then((response) => {
@@ -80,7 +80,7 @@ function getOrder(req, res) {
         // product found
         res.status(200).json({
           valid: true,
-          data: response.dataValues,
+          data: response,
         });
       } else {
         res.status(404).json({
