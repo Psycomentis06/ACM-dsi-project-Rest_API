@@ -1,4 +1,4 @@
-const Contact = require("../models/Contact");
+const Contact = require("../models/contact");
 
 function addContact(req, res) {
   // add contact to database
