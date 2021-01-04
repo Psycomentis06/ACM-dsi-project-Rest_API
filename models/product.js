@@ -1,18 +1,10 @@
 const { DataTypes, Model } = require("sequelize");
 const sequelize = require("../libs/db");
-var uniqid = require("uniqid");
 
 class Product extends Model {}
 
 Product.init(
   {
-    id: {
-      type: DataTypes.UUID,
-      primaryKey: true,
-      defaultValue: () => {
-        return uniqid(uniqid(uniqid.time()));
-      },
-    },
     title: {
       type: DataTypes.TEXT,
       allowNull: false,
