@@ -17,7 +17,7 @@ function addOrder(req, res) {
     productid: tableproduct,
     producttitle: tabletitle,
     nproduct: nbproduct,
-    state: null,
+    state: new Date(),
     price: price,
   })
     .then((response) => {
@@ -105,41 +105,41 @@ function getOrder(req, res) {
 }
 function editOrder(req, res) {
   const id = req.params.id;
-  var tableproduct = req.params.products;
-  var adress = req.body.adress;
-  var tablenproduct = req.params.nproducts;
-  for (let index = 0; index < idproduct.length; index++) {
+  var tableproduct = JSON.stringify(req.body.products || {});
+  var adress = req.body.address;
+  var tablenproduct = JSON.stringify(req.body.nproducts || {});
+  for (let index = 0; index < tableproduct.length; index++) {
     Order.update(
       {
         adress: adress,
         idproduct: tableproduct[index],
         nproduct: tablenproduct[index],
-        state: false,
+        state: req.body.state,
       },
       {
         where: { id: id },
       }
-        .then((response) => {
-          if (response) {
-            // user found
-            res.status(200).json({
-              valid: true,
-              data: response.dataValues,
-            });
-          } else {
-            res.status(404).json({
-              valid: false,
-              error: "User not found",
-            });
-          }
-        })
-        .catch((err) => {
+    )
+      .then((response) => {
+        if (response) {
+          // user found
+          res.status(200).json({
+            valid: true,
+            data: response.dataValues,
+          });
+        } else {
           res.status(404).json({
             valid: false,
-            error: "User error",
+            error: "User not found",
           });
-        })
-    );
+        }
+      })
+      .catch((err) => {
+        res.status(404).json({
+          valid: false,
+          error: err.message,
+        });
+      });
   }
 }
 
