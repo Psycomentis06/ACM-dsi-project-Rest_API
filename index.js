@@ -29,14 +29,17 @@ app.use(API_BASE_URI + "user", userRoutes);
 const productRoutes = require("./routes/product");
 app.use(API_BASE_URI + "product", productRoutes);
 // Order router
-const orderRoutes = require("./routes/contact");
-app.use(API_BASE_URI + "contact", orderRoutes);
+const contactRoutes = require("./routes/contact");
+app.use(API_BASE_URI + "contact", contactRoutes);
 // Message router
 //const messageRoutes = require("./routes/message");
 //app.use(API_BASE_URI + "message", messageRoutes);
 // History
 const historyRoutes = require("./routes/history");
 app.use(API_BASE_URI + "history", historyRoutes);
+// Order router
+const orderRoutes = require("./routes/order");
+app.use(API_BASE_URI + "order", orderRoutes);
 app.listen(PORT, () => {
   console.log("Listen to localhost:" + PORT);
 });

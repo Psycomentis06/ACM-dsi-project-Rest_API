@@ -22,3 +22,5 @@ router.get("/:id", adminAuth, (req, res) => orderController.getOrder(req, res));
 router.put("/:id", adminAuth, (req, res) =>
   orderController.editOrder(req, res)
 );
+
+module.exports = router;
