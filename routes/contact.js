@@ -19,7 +19,7 @@ router.get("/all", adminAuth, (req, res) => {
  * Get contact by id
  */
 router.get("/:id", adminAuth, (req, res) => {
-  contactController.getContacts(req, res);
+  contactController.getContact(req, res);
 });
 
 /**

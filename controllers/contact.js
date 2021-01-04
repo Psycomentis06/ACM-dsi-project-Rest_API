@@ -1,6 +1,4 @@
 const Contact = require("../models/Contact");
-const jwt = require("jsonwebtoken");
-const { response } = require("express");
 
 function addContact(req, res) {
   // add contact to database
@@ -36,19 +34,26 @@ function addContact(req, res) {
   console.log("cree");
 }
 function getContacts(req, res) {
-  Contact.findAll().then((response) => {
-    if (response) {
-      res.status(200).json({
-        valid: true,
-        data: response.dataValues,
-      });
-    } else {
-      res.status(404).json({
+  Contact.findAll()
+    .then((response) => {
+      if (response) {
+        res.status(200).json({
+          valid: true,
+          data: response,
+        });
+      } else {
+        res.status(404).json({
+          valid: false,
+          error: "Contact not found",
+        });
+      }
+    })
+    .catch((err) => {
+      res.status(500).json({
         valid: false,
-        error: "Contact not found",
+        error: err.message,
       });
-    }
-  });
+    });
 }
 function getContact(req, res) {
   const username = req.params.name;
