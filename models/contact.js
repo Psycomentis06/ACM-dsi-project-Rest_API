@@ -55,6 +55,11 @@ Contact.init(
         },
       },
     },
+    seen: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false,
+    },
   },
   {
     sequelize,

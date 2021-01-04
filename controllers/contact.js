@@ -1,5 +1,6 @@
 const Contact = require("../models/Contact");
 const jwt = require("jsonwebtoken");
+const { response } = require("express");
 
 function addContact(req, res) {
   // add contact to database
@@ -83,8 +84,37 @@ function getContact(req, res) {
       });
     });
 }
+
+/** Set Seen */
+function setSeen(req, res) {
+  const contactId = req.params.contactId;
+  Contact.findByPk(contactId)
+    .then((response) => {
+      if (response === null) {
+        res.status(404).json({
+          valid: false,
+          message: "Contact not found",
+        });
+      } else {
+        response.seen = true;
+        response
+          .save()
+          .then(() => {
+            res.status(200).json({ valid: true, message: "Updated" });
+          })
+          .catch(() => {
+            res.status(500).json({ valid: false, error: "Set Seen error" });
+          });
+      }
+    })
+    .catch(() => {
+      res.status(500).json({ valid: false, error: "Contact error" });
+    });
+}
+
 module.exports = {
   addContact,
   getContacts,
   getContact,
+  setSeen,
 };
