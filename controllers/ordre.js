@@ -29,14 +29,21 @@ function addOrder(req, res) {
       console.log("cree");
     })
     .catch((err) => {
-      let errMsg = [];
-      err.errors.map((element) => {
-        errMsg.push(element.message);
-      });
-      res.json({
-        valid: false,
-        error: errMsg,
-      });
+      if (Array.isArray(err.errors)) {
+        let errMsg = [];
+        err.errors.map((element) => {
+          errMsg.push(element.message);
+        });
+        res.status(403).json({
+          valid: false,
+          error: errMsg,
+        });
+      } else {
+        res.status(403).json({
+          valid: false,
+          error: err.message,
+        });
+      }
     });
   console.log("order add");
 }

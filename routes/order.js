@@ -4,6 +4,13 @@ const orderController = require("../controllers/ordre");
 const adminAuth = require("../middlewares/admin.auth");
 
 /**
+ * Add order
+ */
+
+router.post("/", (req, res) => {
+  orderController.addOrder(req, res);
+});
+/**
  * Get all orders
  */
 router.get("/:id", adminAuth, (req, res) =>
