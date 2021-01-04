@@ -6,14 +6,16 @@ const adminAuth = require("../middlewares/admin.auth");
 /**
  * Get all orders
  */
-router.get("/all", adminAuth, (req, res) =>
+router.get("/:id", adminAuth, (req, res) =>
   orderController.getOrders(req, res)
 );
 
 /**
  * Get order by user_id
  */
-router.get("/:id", adminAuth, (req, res) => orderController.getOrder(req, res));
+router.get("/:id/:idu", adminAuth, (req, res) =>
+  orderController.getOrder(req, res)
+);
 
 /**
  * Edit order
