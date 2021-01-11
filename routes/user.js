@@ -123,7 +123,19 @@ router.put("/:id/roles", superAdminAuth, (req, res) => {
  */
 
 router.put("/:id/status", userAuth, (req, res) => {
-  userController.setStatus(req, res);
+  const statusCallback = userController.setStatus(req, res);
+  if (statusCallback) {
+    // set success
+    res.status(200).json({
+      valid: true,
+      message: "User is " + req.body.status,
+    });
+  } else {
+    res.status(400).json({
+      valid: false,
+      message: "Failed to set status",
+    });
+  }
 });
 
 /**
