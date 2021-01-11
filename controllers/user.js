@@ -5,7 +5,7 @@ const mailer = require("../mailer");
 const transporter = require("../mailer");
 const { Op } = require("sequelize");
 const fireAdmin = require("../firebase.config");
-const historyController = require('./history')
+const historyController = require("./history");
 /**
  * Create user
  */
@@ -112,7 +112,9 @@ function authenticate(req, res) {
               expiresIn: "1h",
             }
           );
-          historyController.setUsers()
+          historyController.setUsers(); // Static +1 for logged user
+          req.body.status = "online"; // setBody to online
+          setStatus(req, res);
           res.status(200).json({
             valid: true,
             message: "Logged in",
