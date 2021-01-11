@@ -272,6 +272,12 @@ function setPassword(req, res) {
       message: "Missing attributes",
     });
   } else {
+    if (newPassword.length < 8 || newPassword.length > 16) {
+      return res.status(403).json({
+        valid: false,
+        message: "Password length should be greater than 8 lower than 16",
+      });
+    }
     // check if new pass and re_pass match
     if (newPassword !== rePassword) {
       // pass dose not match

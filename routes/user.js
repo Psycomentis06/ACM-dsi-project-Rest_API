@@ -122,7 +122,7 @@ router.put("/:id/roles", superAdminAuth, (req, res) => {
  * Set status
  */
 
-router.put("/:id/status", userAuth, (req, res) => {
+router.put("/:id/status", (req, res) => {
   userController.setStatus(req, res);
   // set success
   res.status(200).json({
