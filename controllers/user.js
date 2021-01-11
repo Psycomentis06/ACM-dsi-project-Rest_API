@@ -112,9 +112,10 @@ function authenticate(req, res) {
               expiresIn: "1h",
             }
           );
-          historyController.setUsers(); // Static +1 for logged user
           req.body.status = "online"; // setBody to online
-          setStatus(req, res);
+          req.params.id = response.id; // User id
+          setStatus(req, res); // Set user online
+          historyController.setUsers(); // Static +1 for logged user
           res.status(200).json({
             valid: true,
             message: "Logged in",
@@ -797,8 +798,10 @@ function setRoles(req, res) {
 function setStatus(req, res) {
   const userId = req.params.id;
   const userStatus = req.body.status;
+  console.log(req.params);
   if (!userStatus) {
-    return res.status(403).json({
+    return false;
+    res.status(403).json({
       valid: false,
       message: "Status is missing",
     });
@@ -806,28 +809,35 @@ function setStatus(req, res) {
   User.findByPk(userId)
     .then((response) => {
       if (response === null) {
+        console.log("Nope");
+        return false;
         res.status(404).json({
           valid: false,
           message: "User not found",
         });
       } else {
+        console.log(response.status);
         if (response.status !== userStatus) {
+          console.log("Passed");
           response.status = userStatus;
           response
             .save()
             .then((response) => {
+              return true;
               res.status(200).json({
                 valid: true,
                 message: "User is " + response.status,
               });
             })
             .catch((err) => {
+              return false;
               res.status(500).json({
                 valid: false,
                 message: err.errors[0].message,
               });
             });
         } else {
+          return false;
           res.status(403).json({
             valid: false,
             message: "User already " + userStatus,
@@ -836,6 +846,7 @@ function setStatus(req, res) {
       }
     })
     .catch((err) => {
+      return false;
       res.status(500).json({
         valid: false,
         message: err.errors,
