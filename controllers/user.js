@@ -798,7 +798,6 @@ function setRoles(req, res) {
 function setStatus(req, res) {
   const userId = req.params.id;
   const userStatus = req.body.status;
-  console.log(req.params);
   if (!userStatus) {
     return false;
     res.status(403).json({
@@ -809,16 +808,13 @@ function setStatus(req, res) {
   User.findByPk(userId)
     .then((response) => {
       if (response === null) {
-        console.log("Nope");
         return false;
         res.status(404).json({
           valid: false,
           message: "User not found",
         });
       } else {
-        console.log(response.status);
         if (response.status !== userStatus) {
-          console.log("Passed");
           response.status = userStatus;
           response
             .save()
@@ -846,6 +842,7 @@ function setStatus(req, res) {
       }
     })
     .catch((err) => {
+      console.log(err);
       return false;
       res.status(500).json({
         valid: false,
