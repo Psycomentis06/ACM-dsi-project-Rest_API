@@ -5,7 +5,7 @@ const adminAuth = require("../middlewares/admin.auth");
 const superAdminAuth = require("../middlewares/superadmin.auth");
 const userController = require("../controllers/user");
 const User = require("../models/user");
-
+const userRole = require("../middlewares/userRole");
 /**
  * Add user
  */
@@ -18,7 +18,7 @@ router.post("/add", (req, res) => {
  *  Get users
  */
 
-router.get("/all", adminAuth, (req, res) => {
+router.get("/all", adminAuth, userRole, (req, res) => {
   userController.getUsers(req, res);
 });
 
@@ -34,7 +34,7 @@ router.post("/authenticate", (req, res) => {
  * Get user by id
  */
 
-router.get("/:id", userAuth, (req, res) => {
+router.get("/:id", userAuth, userRole, (req, res) => {
   userController.getUser(req, res);
 });
 
@@ -42,7 +42,7 @@ router.get("/:id", userAuth, (req, res) => {
  * Edit user
  */
 
-router.put("/:id", userAuth, (req, res) => {
+router.put("/:id", userAuth, userRole, (req, res) => {
   userController.setUser(req, res);
 });
 
@@ -50,7 +50,7 @@ router.put("/:id", userAuth, (req, res) => {
  * Edit user password
  */
 
-router.put("/:id/password", userAuth, (req, res) => {
+router.put("/:id/password", userAuth, userRole, (req, res) => {
   userController.setPassword(req, res);
 });
 
@@ -82,7 +82,7 @@ router.put("/:id/verify", (req, res) => {
  * Delete user
  */
 
-router.delete("/:id", superAdminAuth, (req, res) => {
+router.delete("/:id", superAdminAuth, userRole, (req, res) => {
   userController.deleteUser(req, res);
 });
 
@@ -90,7 +90,7 @@ router.delete("/:id", superAdminAuth, (req, res) => {
  * Add phone
  */
 
-router.put("/:id/phone", userAuth, (req, res) => {
+router.put("/:id/phone", userAuth, userRole, (req, res) => {
   userController.addPhone(req, res);
 });
 
@@ -98,7 +98,7 @@ router.put("/:id/phone", userAuth, (req, res) => {
  * Add bio
  */
 
-router.put("/:id/bio", userAuth, (req, res) => {
+router.put("/:id/bio", userAuth, userRole, (req, res) => {
   userController.addBio(req, res);
 });
 
@@ -106,7 +106,7 @@ router.put("/:id/bio", userAuth, (req, res) => {
  * Add Address city and country
  */
 
-router.put("/:id/address", userAuth, (req, res) => {
+router.put("/:id/address", userAuth, userRole, (req, res) => {
   userController.addAddress(req, res);
 });
 
@@ -114,7 +114,7 @@ router.put("/:id/address", userAuth, (req, res) => {
  * Set role
  */
 
-router.put("/:id/roles", superAdminAuth, (req, res) => {
+router.put("/:id/roles", superAdminAuth, userRole, (req, res) => {
   userController.setRoles(req, res);
 });
 
@@ -135,7 +135,7 @@ router.put("/:id/status", (req, res) => {
  * Get user image
  */
 
-router.get("/:id/photo", userAuth, (req, res) => {
+router.get("/:id/photo", userAuth, userRole, (req, res) => {
   userController.getImage(req, res);
 });
 
@@ -143,7 +143,7 @@ router.get("/:id/photo", userAuth, (req, res) => {
  * Set user image
  */
 
-router.put("/:id/photo", userAuth, (req, res) => {
+router.put("/:id/photo", userAuth, userRole, (req, res) => {
   userController.addImage(req, res);
 });
 
