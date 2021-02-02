@@ -3,7 +3,7 @@
  */
 const User = require("../models/user");
 module.exports = (req, res, next) => {
-  User.findByPk(req.params.id)
+  User.findByPk(req.body.tokenData.id)
     .then((response) => {
       if (response === null) {
         res.status(401).json({
