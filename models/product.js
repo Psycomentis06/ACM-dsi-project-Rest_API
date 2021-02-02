@@ -12,6 +12,10 @@ Product.init(
         notNull: {
           msg: "Tilte name is required",
         },
+        len: {
+          args: [1, 300],
+          msg: "Title length limit is 300",
+        },
       },
     },
     price: {
@@ -20,6 +24,14 @@ Product.init(
       validate: {
         notNull: {
           msg: "Price is required",
+        },
+        max: {
+          args: [999999],
+          msg: "999999 is maximum value",
+        },
+        min: {
+          args: [0],
+          msg: "0 is the minimum value",
         },
       },
     },
@@ -57,6 +69,14 @@ Product.init(
         notNull: {
           msg: "Number is required",
         },
+        max: {
+          args: [9999],
+          msg: "9999 is the maximum value",
+        },
+        min: {
+          args: [0],
+          msg: "0 is the minimum value",
+        },
       },
     },
     category: {
@@ -74,6 +94,14 @@ Product.init(
       validate: {
         notNull: {
           msg: "discount is required",
+        },
+        max: {
+          args: [100],
+          msg: "100 is the maximum value",
+        },
+        min: {
+          args: [0],
+          msg: "0 is the minimum value",
         },
       },
     },
