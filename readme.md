@@ -8,7 +8,7 @@ The structure is simple for the backend (MVC architecture based).
 
     - `libs` : For some configurations like mysql connection.
 
-    - `errors` : Custom error classes.
+    - `middleware` : Experss middlewares.
 
 **Setting up the project**
 
